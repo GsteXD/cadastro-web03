@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { Routes } from '@angular/router';
 import { CadastroComponent } from './components/cadastro/cadastro.component';
 import { MainPageComponent } from './components/main-page/main-page.component';
