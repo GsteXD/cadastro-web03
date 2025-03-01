@@ -11,13 +11,13 @@
                 <input type="number" id="cod_cliente" required> <br>
 
                 <label for="full_name"> Nome: </label> <br>
-                <input type="text" id="full_name" pattern="[A-Za-z]+" required> <br>
+                <input type="text" id="full_name" pattern="[A-Za-z]+ [A-Za-z]+" required> <br>
 
                 <label for="email"> Email: </label> <br>
                 <input type="email" id="email" required> <br>
 
                 <label for="telefone"> Telefone: </label> <br>
-                <input type="tel" id="telefone" pattern="[0-9]{2}[0-9]{5}[0-9]{4}" required> <br>
+                <input type="tel" id="telefone" pattern="[0-9]{11}" required> <br>
 
                 <label for="documento"> Documento: </label> <br>
                 <select name="documento" id="documento" required>
@@ -36,6 +36,9 @@
 
                 <label for="senha_confirm"> Confirme a senha: </label> <br>
                 <input type="password" id="senha_confirm" required> <br>
+
+                <input type="checkbox" id="notify_check">
+                <label for="notify_check"> Autorizar o envio de ofertas pelo email</label> <br>
 
                 <input type="submit" id="submit_1" value="Enviar">
             </fieldset>
