@@ -1,20 +1,24 @@
 <!--ROUTER DE PÁGINAS-->
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <nav>
-            <img class="logo" src="http://i.imgur.com/hCrQkJi.png" alt="sample">
-            <ul class="topnav">
-                <li style="float: right"><a class="active" href="/cadastro" routerLink="cadastro">Cadastro</a></li> <!--Transformar em Login-->
-                <li><a href="/mainPage" routerLink="mainPage">Menu</a></li>
-                <li><a href="contact.asp">PlaceHolder</a></li>
-                <li><a href="about.asp">PlaceHolder</a></li>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/mainPage">
+            <img class="d-inline-block" src="assets/images/logo.png" alt="logo" style="width:50px;">
+            Omask!
+        </a>
+     
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav me-auto topnav">
+                <li class="nav-item" style="float: right;"><a class="nav-link active" href="/login" routerLink="login">Login</a></li> <!--Transformar em Login-->
+                <li class="nav-item"><a class="nav-link" href="/mainPage" routerLink="mainPage">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.asp">PlaceHolder</a></li>
+                <li class="nav-item"><a class="nav-link" href="about.asp">PlaceHolder</a></li>
             </ul>
-        </nav>
-    </body>
-</html>
+        </div>
+    </div>
+</nav>
+
 <router-outlet></router-outlet>
