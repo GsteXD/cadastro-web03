@@ -1,17 +1,10 @@
-body {margin: 0;}
-
-.logo {
-    display: inline-block;
-    width: 46px;
-}
-
 ul.topnav {
     margin: 0;
     padding: 0;
     overflow: hidden;
     display: inline-block;
     vertical-align: top;
-    background-color: #333;
+    background-color: #1e22259c;
 }
 
 ul.topnav li {float: left;}
@@ -24,14 +17,9 @@ ul.topnav li a {
     text-decoration: none;
 }
 
-ul.topnav li a:hover:not(.active) {background-color: #111;}
+ul.topnav li a:hover:not(.active) {background-color: #12161a;}
 
 ul.topnav li a.active {background-color: #04AA6D;}
 ul.topnav li a:hover.active {background-color: #03744a; }
 
 ul.topnav li.right {float: right;}
-
-@media screen and (max-width: 600px) {
-    ul.topnav li.right, 
-    ul.topnav li {float: none;}
-}
