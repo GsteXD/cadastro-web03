@@ -1,0 +1,19 @@
+<body>
+    <h1>Login</h1>
+    <form>
+        <fieldset>
+            <label for="emailLogin"> Email: </label> <br>
+            <input id="emailLogin" type="email" autocomplete="one-time-code" required> <br>
+
+            <label for="senhaLogin"> Senha: </label> <br>
+            <input id="senhaLogin" type="password" autocomplete="one-time-code" required> <br>
+
+            <input id="submitLogin" type="submit" value="Acessar"> <br>
+
+            <a class="active" routerLink="/cadastro">Não tem cadastro? Clique aqui</a> <br>
+            <a href="#">Esqueci a senha</a> 
+        </fieldset>
+    </form>
+</body>
+
+<router-outlet></router-outlet>
