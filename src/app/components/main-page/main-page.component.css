@@ -1,0 +1,13 @@
+.pt-5 {
+    margin-top: 60px;
+}
+.button-log{
+    height: 100px;
+    width: 100%;
+    text-align: left;
+    display: block;
+    border: transparent;
+    font-size: 32px;
+    line-height: 100px;
+    padding-top: 25px;
+}
