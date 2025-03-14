@@ -1,0 +1,28 @@
+.pt-5 {
+    margin-top: 100px;
+}
+
+.small {
+    width: 400px;
+    height: 400px;
+    background-color: rgb(253, 255, 232);
+}
+
+form{
+    margin-top: 30px;
+    margin-left: 100px;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 60px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
