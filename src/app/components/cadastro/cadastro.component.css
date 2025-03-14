@@ -1,0 +1,60 @@
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="tel"],
+input[type="documento"],
+select,
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+input[type="checkbox"] {
+    margin-top: 10px;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    margin-top: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+body {
+    background-color: antiquewhite;
+}
+
+.form-group { /*Agrupamento de campos*/
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    align-items: baseline;
+}
+
+.input-wrapper { /*Campo de preenchimento*/
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-grow: 1;
+}
+
+.input-wrapper.small { /*Campo encurtado*/
+    flex-grow: 0;
+    width: 120px;
+}
+
+.pt-5 {
+    margin-top: 60px;
+}
+

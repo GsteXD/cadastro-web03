@@ -1,48 +1,56 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-    <head>
-        <title> Cadastro </title>
-    </head>
-    <body>
-        <h1> Cadastro de Cliente </h1>
+<body>
+    <div class="container pt-5 bg-white">
+        <h1 class="text-center"> Cadastro de Cliente </h1>
         <form>
             <fieldset>
-                <label for="cod_cliente"> Código: </label> <br> <!--TODO-->
-                <input type="number" id="cod_cliente" required> <br>
-
-                <label for="full_name"> Nome: </label> <br>
-                <input type="text" id="full_name" pattern="[A-Za-z]+ [A-Za-z]+" required> <br>
-
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <label for="full_name">Nome:</label> 
+                        <input type="text" id="full_name" required>
+                    </div>
+                
+                    <div class="input-wrapper small">
+                        <label for="cod_cliente">Código:</label>
+                        <input type="number" id="cod_cliente" required>
+                    </div>
+                </div>
+                
                 <label for="email"> Email: </label> <br>
                 <input type="email" id="email" required> <br>
-
+    
                 <label for="telefone"> Telefone: </label> <br>
                 <input type="tel" id="telefone" pattern="[0-9]{11}" required> <br>
-
+    
                 <label for="documento"> Documento: </label> <br>
-                <select name="documento" id="documento" required>
-                    <option value="RG">RG</option>
-                    <option value="CPF">CPF</option>
-                    <option value="CNH">CNH</option>
-                </select>
-                <!--TODO: Criar lógica para cada tipo de documento a ser registrado-->
-                <input type="number" id="Doctype" required> <br>
-
+                <div class="form-group">
+                    
+                    <div class="input-wrapper small">                    
+                        <select name="documento" id="documento" required>
+                            <option value="RG">RG</option>
+                            <option value="CPF">CPF</option>
+                            <option value="CNH">CNH</option>
+                        </select>
+                    </div>
+                    <div class="input-wrapper">
+                        <!--TODO: Criar lógica para cada tipo de documento a ser registrado-->
+                        <input type="number" id="Doctype" required> 
+                    </div>
+                </div>
+    
                 <label for="endereco"> Endereço: </label> <br>
                 <input type="text" id="endereco" required> <br>
-
+    
                 <label for="senha"> Senha: </label> <br>
                 <input type="password" id="senha" required> <br>
-
+    
                 <label for="senha_confirm"> Confirme a senha: </label> <br>
                 <input type="password" id="senha_confirm" required> <br>
-
+    
                 <input type="checkbox" id="notify_check">
                 <label for="notify_check"> Autorizar o envio de ofertas pelo email</label> <br>
-
+    
                 <input type="submit" id="submit_1" value="Enviar">
             </fieldset>
         </form>
-    </body>
-
-</html>
+    </div>
+</body>
