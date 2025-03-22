@@ -1,13 +1,40 @@
 .pt-5 {
     margin-top: 60px;
 }
-.button-log{
-    height: 100px;
+.btn-primary{
     width: 100%;
-    text-align: left;
-    display: block;
-    border: transparent;
-    font-size: 32px;
-    line-height: 100px;
-    padding-top: 25px;
+}
+.card{
+    background-color:rgba(216, 216, 216, 0.384);
+}
+.carousel-control-prev,
+.carousel-control-next {
+    width: 50px; /* Reduz a largura */
+    height: 50px; /* Reduz a altura */
+    background-color: rgba(0, 0, 0, 0.2); /* Fundo semi-transparente */
+    border-radius: 50%; /* Deixa as setas redondas */
+    align-items: center;
+    align-self: center;
+}
+
+.carousel-control-prev{
+    left: 10px;
+}
+
+.carousel-control-next{
+    right: 10px;
+}
+
+.carousel-indicators {
+    bottom: -20px;
+}
+
+.carousel-indicators button {
+    background-color: gray; /* Cor padrão */
+    opacity: 0.5; /* Transparência */
+}
+
+.carousel-indicators .active{
+    background-color: blue;
+    opacity: 1;
 }
