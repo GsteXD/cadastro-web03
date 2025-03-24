@@ -1,1 +1,13 @@
-<p>detalhes works!</p>
+<div class="container pt-5">
+    <div *ngIf="produto">
+        <h1>{{ produto.nome }}</h1>
+        <img [src]="produto.imagem" alt="{{ produto.nome }}">
+        <p><strong>Preço:</strong> {{ produto.preco }}</p>
+        <p>{{ produto.descricao }}</p>
+    </div>
+      
+    <div *ngIf="!produto">
+        <h2>Produto não encontrado!</h2>
+    </div>
+</div>
+  

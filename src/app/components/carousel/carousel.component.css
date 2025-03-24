@@ -1,0 +1,21 @@
+.carousel-control-prev,
+.carousel-control-next {
+    width: 50px; /* Largura do botão */
+    height: 50px; /* Altura do botão */
+    background-color: rgba(0, 0, 0, 0.8); /* Cor do botão (último parâmetro para opacidade) */
+    border-radius: 50%; /* Deixa em formato de círculo */
+    align-items: center;
+    align-self: center;
+}
+
+.carousel-control-prev{
+    left: 10px;
+}
+
+.carousel-control-next{
+    right: 10px;
+}
+
+.carousel-indicators {
+    bottom: -20px;
+}
