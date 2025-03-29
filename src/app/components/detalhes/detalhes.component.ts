@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
+import { CartService } from '../../services/cart.service';
+import { CartComponent } from '../cart/cart.component';
 
 @Component({
   selector: 'app-detalhes',
-  imports: [CommonModule, RouterOutlet, RouterLink],
+  standalone: true,
+  imports: [CommonModule, RouterOutlet, RouterLink, CartComponent],
   templateUrl: './detalhes.component.html',
   styleUrl: './detalhes.component.css'
 })
@@ -23,7 +26,10 @@ export class DetalhesComponent implements OnInit {
     { id: 6, nome: 'Produto 6', preco: 'R$ 99,90', imagem: 'produto6.jpg', descricao: 'Descrição do produto 6' }
   ];
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private cartService: CartService
+  ) {}
 
   //Função ativada ao inicializar a página
   ngOnInit(): void {
@@ -31,5 +37,10 @@ export class DetalhesComponent implements OnInit {
       const id = Number(this.route.snapshot.paramMap.get('id'));
       // Busca pelo produto
       this.produto = this.produtos.find(p => p.id === id);
+  }
+
+  addCarrinho() {
+    this.cartService.addItem(this.produto);
+    this.cartService.openCart();
   }
 }

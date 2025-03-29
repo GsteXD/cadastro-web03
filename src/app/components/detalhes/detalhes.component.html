@@ -4,10 +4,13 @@
         <img [src]="produto.imagem" alt="{{ produto.nome }}">
         <p><strong>Preço:</strong> {{ produto.preco }}</p>
         <p>{{ produto.descricao }}</p>
+        <button (click)="addCarrinho()" class="btn btn-primary">Comprar</button>
     </div>
       
     <div *ngIf="!produto">
         <h2>Produto não encontrado!</h2>
     </div>
+    <!--Importa o carrinho-->
+    <app-cart></app-cart>
 </div>
   
