@@ -1,0 +1,23 @@
+<div class="cart-sidebar" [class.show]="cartService.getCartVisibility()">
+  <!--Lista do Carrinho-->
+  <button class="btn btn-danger close-btn" (click)="cartService.toggleCart()">X</button>
+  <h4>Carrinho de Compras</h4>
+  <ul class="list-group">
+    <li *ngFor="let item of cartService.getItems()" class="list-group-item d-flex align-items-center">
+      <button class="btn btn-danger remove-item" (click)="cartService.removeItem(item.id)">-</button>
+      <span>{{ item.nome }} - R$ {{ item.preco }}</span>
+
+      <div class="quantity-control">
+          <button class="btn btn-sm btn-warning" (click)="cartService.addItem(item)">+</button>
+          <span class="quantity">{{ item.quantidade }}</span>
+          <button class="btn btn-sm btn-warning" (click)="cartService.removeOneItem(item)">-</button>
+      </div>
+
+    </li>
+  </ul>
+
+  <!--Total do Carrinho-->
+  <div class="cart-total">
+      <strong>Total:</strong> R$ {{ cartService.getTotal() | number: '1.2-2' }} <!--Mostra sempre 2 casas decimais-->
+  </div>
+</div>
