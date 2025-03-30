@@ -24,7 +24,9 @@ ul.topnav li a:hover.active {background-color: #03744a; }
 
 ul.topnav li.right {float: right;}
 
+/*Botão do carrinho de compras*/
 .navbar .btn-warning {
+    align-self: right;
     margin-left: 10px;
 }
 
@@ -32,3 +34,13 @@ ul.topnav li.right {float: right;}
     font-size: 0.8rem;
     padding: 5px;
 }
+
+@media (max-width: 576px) { /* Aplica a regra em telas menores que 576px (celulares) */
+    .cart-text { display: none; }  /* Esconde o texto "Carrinho" */
+    .cart-icon { display: inline !important; } /* Exibe só o ícone */
+}
+@media (min-width: 577px) { /* Para telas maiores, mostra tudo normalmente */
+    .cart-text { display: inline; }
+    .cart-icon { display: none !important; }
+}
+

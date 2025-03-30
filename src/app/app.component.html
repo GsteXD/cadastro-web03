@@ -18,19 +18,21 @@
                 <li class="nav-item"><a class="nav-link" href="about.asp">PlaceHolder</a></li>
             </ul>
         </div>
-        <form class="d-flex">
+        <div class="d-flex align-items-center">
+            <!--Barra de Pesquisa-->
             <input class="form-control me-2" type="text" placeholder="Search">
             <button class="btn btn-primary" type="button">Search</button>
-        </form>
-
-        <button class="btn btn-warning position-relative me-3" (click)="cartService.openCart()">
-            🛒 Carrinho
-            <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">
-                <!--Pega a quantidade total de produtos dentro do carrinho-->
-                {{ cartService.getTotalItems() }}
-            </span>
-        </button>
-
+            <!--Botão do Carrinho de Compras-->
+            <button class="btn btn-warning position-relative p-2 cart-btn" (click)="cartService.toggleCart()">
+                <span class="cart-text">🛒 Carrinho</span>
+                <span class="cart-icon d-none">🛒</span>
+                <span *ngIf="cartService.getTotalItems() > 0" 
+                    class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+                    {{ cartService.getTotalItems() }}
+                </span>
+            </button>
+             
+        </div>
     </div>
 </nav>
 
