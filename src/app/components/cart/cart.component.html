@@ -21,4 +21,9 @@
   <div class="cart-total">
       <strong>Total:</strong> R$ {{ cartService.getTotal() | number: '1.2-2' }} <!--Mostra sempre 2 casas decimais-->
   </div>
+
+  <!-- Botão de Finalizar Pedido -->
+  <div class="text-center mt-3">
+    <button class="finalizar-btn" (click)="cartService.finalizarPedido()">Finalizar Pedido</button>
+  </div>
 </div>

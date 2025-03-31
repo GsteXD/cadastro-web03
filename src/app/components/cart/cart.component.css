@@ -19,7 +19,7 @@
 
 .cart-total {
     position: absolute;
-    bottom: 100px;
+    bottom: 150px;
     width: 100%;
     background: white;
     padding: 10px;
@@ -62,18 +62,42 @@
     padding: 0;
   }
 
-  @media (max-width: 768px) {
+.finalizar-btn {
+    position: absolute;
+    bottom: 100px;
+    width: 80%;
+    left: 40px;
+    background: #04AA6D;
+    color: white;
+    border: transparent;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.finalizar-btn:hover,
+.finalizar-btn:active {
+    background-color: #03744a;
+}
+
+@media (max-width: 768px) {
     .cart-sidebar {
-        margin-top: 100px;
+        margin-top: 110px;
         width: 100%;
         right: -100%;
     }
 
     .cart-total {
-        bottom: 150px;
+        bottom: 160px;
     }
 
     .cart-sidebar.show {
         right: 0;
     }
-  }
+    .finalizar-btn {
+        font-size: 0.9rem;
+        padding: 8px;
+        bottom: 120px;
+    }
+}
