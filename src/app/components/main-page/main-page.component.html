@@ -1,15 +1,15 @@
 <div class="container-fluid pt-5">
     <h1 class="mb-4 text-center">Em Destaque</h1>
-    <!-- Importa o Carousel para a página principal -->
-    <!-- TODO: Lembrar de mudar isso quando conectar ao BD -->
+    <!-- Passa o array bidimensional para o Carousel -->
     <app-carousel [produtos]="produtos"></app-carousel>
 </div>
 <br> <br>
 <div class="container">
     <h1 class="mb-4 text-center">Mais Produtos</h1>
-    <!-- row genérica para exibição de produtos -->
+    <!-- Itera sobre o array bidimensional -->
     <div class="row">
         <div class="col-md-3" *ngFor="let produto of produtos.flat()">
+            <!-- Exibe os produtos em cards -->
             <div class="card produto">
                 <img [src]="produto.imagem" class="card-img-top" [alt]="produto.nome">
                 <div class="card-body text-center">
