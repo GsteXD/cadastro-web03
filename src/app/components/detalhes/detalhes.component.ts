@@ -29,6 +29,13 @@ export class DetalhesComponent implements OnInit {
       const id = Number(this.route.snapshot.paramMap.get('id'));
       // Busca pelo produto
       this.produto = this.produtoService.getProdutos().flat().find(p => p.id === id);
+
+      if (!this.produto) {
+        console.error(`Produto com ID ${id} não encontrado.`);
+      } else {
+        console.log('Produto carregado:', this.produto);
+      }
+
   }
 
   addCarrinho() {

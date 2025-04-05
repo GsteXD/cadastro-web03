@@ -1,3 +1,20 @@
 .pt-5 {
     margin-top: 60px;
 }
+
+img {
+    max-width: 512px; /* Define a largura máxima */
+    max-height: 512px; /* Define a altura máxima */
+    display: block; /* Garante que a imagem seja exibida como um bloco */
+    margin: 0 auto; /* Centraliza a imagem horizontalmente */
+  }
+
+@media (max-width: 768px) {
+    .pt-5 {
+        margin-top: 100px;
+    }
+    img {
+        max-width: 100%; /* Ajusta a largura máxima para 100% da tela */
+        max-height: 300px; /* Ajusta a altura máxima para 300px */
+    }
+}

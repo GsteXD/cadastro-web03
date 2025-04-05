@@ -8,6 +8,13 @@
     align-self: center;
 }
 
+.carousel-item img {
+    max-width: 256px; /* Define a largura máxima */
+    max-height: 256px; /* Define a altura máxima */
+    object-fit: contain; /* Ajusta a imagem para caber dentro do tamanho definido */
+    margin: 0 auto; /* Centraliza a imagem horizontalmente */
+  }
+
 .carousel-control-prev{
     left: 10px;
 }
