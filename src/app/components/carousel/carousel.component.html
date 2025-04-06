@@ -1,19 +1,14 @@
-<!-- Carrossel dinâmico para a página principal -->
-
-<!--TODO: Deixar esta página dinâmica para o celular-->
-<div id="carouselProdutos" class="carousel slide" data-bs-ride="carousel">
+<div id="carouselProdutos" class="carousel slide" data-bs-interval="3000" data-bs-ride="carousel">
     <div class="carousel-inner">
-        <!-- Exibição genérica dos itens, partindo do primeiro elemento da lista -->
-        <div *ngFor="let grupo of produtos; let primeiro = first" class="carousel-item" [class.active]="primeiro">
-            <div class="row justify-content-center">
-                <div *ngFor="let produto of grupo" class="col-md-4">
+        <!-- Exibição dinâmica dos produtos individuais -->
+        <div *ngFor="let produto of produtosUnicos; let i = index" class="carousel-item" [class.active]="i === 0">
+            <div class="d-flex justify-content-center">
+                <div class="col-12">
                     <div class="card text-center">
                         <img [src]="produto.imagem" class="card-img-top" [alt]="produto.nome">
                         <div class="card-body">
-                            <!-- Exibição das características do produto através das informações da lista -->
                             <h5 class="card-title">{{ produto.nome }}</h5>
                             <p class="preco fs-4 text-success">{{ produto.preco }}</p>
-                            <!-- Ao clicar no item, leva a sua página a partir do id estabelecido na lista -->
                             <a [routerLink]="['/detalhes', produto.id]" class="btn btn-primary">Comprar</a>
                         </div>
                     </div>

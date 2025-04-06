@@ -3,14 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { CarouselComponent } from '../carousel/carousel.component';
 import { ProdutoService } from '../../services/produto/produto.service';
-
-interface Produto {
-  id: number;
-  nome: string;
-  preco: string;
-  imagem: string;
-  descricao: string; 
-}
+import { Produto } from '../../models/produto.model';
 
 @Component({
   selector: 'app-main-page',

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Produto } from '../../models/produto.model';
 
 @Component({
   selector: 'app-carousel',
@@ -10,6 +11,11 @@ import { RouterLink } from '@angular/router';
 })
 
 export class CarouselComponent {
-  //Pega os dados disponíveis em uma lista presente no componente pai. (nesse caso, a página principal)
-  @Input() produtos: { id: number; nome: string; preco: string; imagem: string }[][] = [];
+  @Input() produtos: Produto[][] = []; // Array bidimensional de produtos
+  produtosUnicos: Produto[] = []; // Array unidimensional de produtos
+
+  ngOnInit(): void {
+    // Achata o array bidimensional em um array unidimensional
+    this.produtosUnicos = this.produtos.flat();
+  }
 }
