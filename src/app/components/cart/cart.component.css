@@ -4,6 +4,7 @@
     right: -500px;
     width: 400px;
     margin-top: 80px;
+    z-index: 1000; /*Sempre deixa o carrinho em cima de tudo*/
     height: 100%;
     background: white;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
