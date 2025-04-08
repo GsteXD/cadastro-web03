@@ -32,24 +32,38 @@ input[type="submit"]:hover {
 }
 
 body {
-    background-color: antiquewhite;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; 
+    margin: 0; 
+    background-color: #f4f4f4; 
 }
 
-.form-group { /*Agrupamento de campos*/
+.container { 
+    background-color: #d0deeb;
+    padding: 20px; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    width: 100%;
+    max-width: 600px; 
+}
+
+.form-group { 
     display: flex;
     gap: 15px;
     width: 100%;
     align-items: baseline;
 }
 
-.input-wrapper { /*Campo de preenchimento*/
+.input-wrapper { 
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     flex-grow: 1;
 }
 
-.input-wrapper.small { /*Campo encurtado*/
+.input-wrapper.small { 
     flex-grow: 0;
     width: 120px;
 }
