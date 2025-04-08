@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ProdutoService } from '../../services/produto/produto.service';
 import { CartService } from '../../services/cart/cart.service';
 import { CartComponent } from '../cart/cart.component';
@@ -8,7 +8,7 @@ import { CartComponent } from '../cart/cart.component';
 @Component({
   selector: 'app-detalhes',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, CartComponent],
+  imports: [CommonModule, CartComponent],
   templateUrl: './detalhes.component.html',
   styleUrl: './detalhes.component.css'
 })

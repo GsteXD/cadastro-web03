@@ -1,16 +1,27 @@
 <div class="container pt-5">
-    <div *ngIf="produto">
-        <h1>{{ produto.nome }}</h1>
-        <img [src]="produto.imagem" alt="{{ produto.nome }}">
-        <p><strong>Preço:</strong> {{ produto.preco }}</p>
-        <p>{{ produto.descricao }}</p>
-        <button (click)="addCarrinho()" class="btn btn-primary">Comprar</button>
+    <div *ngIf="produto" class="row align-items-center">
+        <!-- Coluna para a imagem -->
+        <div class="col-12 col-md-4 text-center">
+            <img [src]="produto.imagem" alt="{{ produto.nome }}" class="img-fluid rounded">
+        </div>
+
+        <!-- Linha vertical -->
+        <div class="col-12 col-md-1 d-none d-md-flex justify-content-center">
+            <div class="linha-vertical"></div>
+        </div>
+
+        <!-- Coluna para os detalhes -->
+        <div class="col-12 col-md-7">
+            <h1>{{ produto.nome }}</h1>
+            <p><strong>Preço:</strong> {{ produto.preco }}</p>
+            <p>{{ produto.descricao }}</p>
+            <button (click)="addCarrinho()" class="btn btn-primary mt-3">Comprar</button>
+        </div>
     </div>
-      
+
     <div *ngIf="!produto">
         <h2>Produto não encontrado!</h2>
     </div>
-    <!--Importa o carrinho-->
-    <app-cart></app-cart>
 </div>
-  
+
+<app-cart></app-cart>

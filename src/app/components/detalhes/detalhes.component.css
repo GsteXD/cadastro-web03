@@ -2,12 +2,32 @@
     margin-top: 60px;
 }
 
+.linha-vertical { /* TODO: ver por que o height auto não funciona*/
+    width: 2px; 
+    height: 256px; 
+    background-color: #5e5e5e; 
+    margin: 0 auto; 
+}
+
 img {
-    max-width: 512px; /* Define a largura máxima */
-    max-height: 512px; /* Define a altura máxima */
-    display: block; /* Garante que a imagem seja exibida como um bloco */
-    margin: 0 auto; /* Centraliza a imagem horizontalmente */
+    max-width: 100%;
+    height: auto;
   }
+
+h1 {
+    font-size: 2rem; /* Ajusta o tamanho do título */
+    margin-bottom: 1rem;
+}
+
+p {
+    font-size: 1.1rem; /* Ajusta o tamanho do texto */
+    line-height: 1.5; /* Melhora o espaçamento entre linhas */
+}
+
+button {
+    font-size: 1.2rem; /* Aumenta o tamanho do botão */
+    padding: 0.5rem 1.5rem; /* Ajusta o espaçamento interno do botão */
+}
 
 @media (max-width: 768px) {
     .pt-5 {
