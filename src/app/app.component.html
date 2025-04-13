@@ -20,8 +20,8 @@
         </div>
         <div class="d-flex align-items-center">
             <!--Barra de Pesquisa-->
-            <input class="form-control me-2" type="text" placeholder="Search">
-            <button class="btn btn-primary" type="button">Search</button>
+            <input class="form-control me-2" type="text" placeholder="Search" (input)="onSearchInput($event)">
+            <button class="btn btn-primary" type="button" (click)="search()">Pesquisar</button>
             <!--Botão do Carrinho de Compras-->
             <button class="btn btn-warning position-relative p-2 cart-btn" (click)="cartService.toggleCart()">
                 <span class="cart-text">🛒 Carrinho</span>

@@ -9,9 +9,9 @@
       <span>{{ item.nome }} - R$ {{ item.preco }}</span>
 
       <div class="quantity-control">
-          <button class="btn btn-sm btn-warning" (click)="cartService.addItem(item)">+</button>
-          <span class="quantity">{{ item.quantidade }}</span>
           <button class="btn btn-sm btn-warning" (click)="cartService.removeOneItem(item)">-</button>
+          <span class="quantity">{{ item.quantidade }}</span>
+          <button class="btn btn-sm btn-warning" (click)="cartService.addItem(item)">+</button>
       </div>
 
     </li>

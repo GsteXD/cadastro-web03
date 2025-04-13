@@ -1,0 +1,20 @@
+<div class="container pt-5">
+    <h2 class="mb-4">Resultados para: <span class="query">{{ searchTerm }}</span></h2>
+    <div *ngIf="filteredItems.length > 0; else noResults">
+        <div class="row">
+            <div class="col-md-3" *ngFor="let produto of filteredItems">
+                <div class="card produto">
+                    <img [src]="produto.imagem" class="card-img-top" [alt]="produto.nome">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ produto.nome }}</h5>
+                        <p class="preco text-success">{{ produto.preco }}</p>
+                        <a [routerLink]="['/detalhes', produto.id]" class="btn btn-primary">Comprar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template #noResults>
+        <p>Nenhum produto encontrado para "{{ searchTerm }}".</p>
+    </ng-template>
+</div>
