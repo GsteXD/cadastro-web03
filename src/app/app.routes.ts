@@ -14,26 +14,31 @@ export const routes: Routes = [
 
   {
     path:'mainPage',
-    component:MainPageComponent
+    component:MainPageComponent,
+    data: { title: 'QMask!' }
   },
 
   {
     path:'cadastro',
-    component:CadastroComponent
+    component:CadastroComponent,
+    data: { title: 'Cadastro - QMask!' }
   },
 
   {
     path:'login',
-    component:LoginComponent
+    component:LoginComponent,
+    data: { title: 'Login - QMask!' }
   },
 
   {
     path:'detalhes/:id',
-    component:DetalhesComponent
+    component:DetalhesComponent,
+    data: { title: 'Detalhes do Produto - QMask!' }
   },
 
   {
     path: 'busca',
-    component: BuscaComponent
+    component: BuscaComponent,
+    data: { title: 'Resultados de Busca - QMask!' }
   }
 ];

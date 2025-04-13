@@ -1,22 +1,26 @@
-import { Component } from '@angular/core';
-import { RouterLink, RouterOutlet, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { RouterLink, RouterOutlet, Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { CartService } from './services/cart/cart.service';
 import { CartComponent } from './components/cart/cart.component';
 import { CommonModule } from '@angular/common';
+import { Title } from '@angular/platform-browser';
+import { filter, map, mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
-  standalone: true, // Indica que este é um componente standalone
-  imports: [RouterOutlet, RouterLink, CartComponent, CommonModule], // Certifique-se de incluir o FormsModule
+  standalone: true,
+  imports: [RouterOutlet, RouterLink, CartComponent, CommonModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   searchTerm: string = ''; // Termo de busca
 
   constructor(
     public cartService: CartService,
-    private router: Router // Rota para barra de navegação
+    private router: Router, // Rota para barra de navegação
+    private titleService: Title, // Título da página
+    private activatedRoute: ActivatedRoute
   ) {}
 
   // Captura o valor do campo de texto
@@ -30,5 +34,24 @@ export class AppComponent {
       // Redireciona para a página de busca com o termo como parâmetro
       this.router.navigate(['/busca'], { queryParams: { q: this.searchTerm } });
     }
+  }
+  
+  // Aplicação dos títulos de forma dinâmica
+  ngOnInit(): void {
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        map(() => this.activatedRoute),
+        map(route => {
+          while (route.firstChild) route = route.firstChild;
+          return route;
+        }),
+        mergeMap(route => route.data)
+      )
+      .subscribe(data => {
+        if (data['title']) {
+          this.titleService.setTitle(data['title']);
+        }
+      });
   }
 }
