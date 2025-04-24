@@ -1,11 +1,75 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+
+import { cpfValidator } from './validadores/cpfValidador';
+import { rgValidator } from './validadores/rgValidador';
+import { senhaValidator, senhaMatchValidator } from './validadores/senhaValidador';
 
 @Component({
   selector: 'app-cadastro',
-  imports: [],
+  imports: [ReactiveFormsModule, CommonModule, NgxMaskDirective],
+  providers: [provideNgxMask()],
   templateUrl: './cadastro.component.html',
   styleUrl: './cadastro.component.css'
 })
-export class CadastroComponent {
+export class CadastroComponent implements OnInit {
+  cadastroForm: FormGroup;
 
+  mascaraDocumento: string = '';
+  mascaraTelefone: string = '00000-0000';
+
+  constructor(private fb: FormBuilder, private router: Router) {
+    this.cadastroForm = this.fb.group({
+      fullName: ['', [Validators.required, Validators.minLength(6)]],
+      email: ['', [Validators.required, Validators.email]],
+      ddd: ['', [Validators.required, Validators.pattern(/^\d{2}$/)]],
+      telefone: ['', [Validators.required, Validators.pattern(/^\d{9,11}$/)]],
+      documento_id: ['', Validators.required],
+      documento: ['', Validators.required],
+      senha: ['', [Validators.required, Validators.minLength(6), senhaValidator]],
+      senhaConfirm: ['', Validators.required],
+      notifyCheck: [false]
+    }, { validators: senhaMatchValidator }); 
+  }
+
+  onSubmit(): void {
+    if (this.cadastroForm.valid) {
+      console.log('Dados enviados:', this.cadastroForm.value);
+      this.router.navigate(['/mainPage']); // Navega para a página inicial
+    } else {
+      alert('Por favor, preencha todos os campos obrigatórios corretamente.');
+    }
+  }
+
+  ngOnInit(): void{
+    this.cadastroForm.get('documento')?.valueChanges.subscribe(value => {
+      const documentoControl = this.cadastroForm.get('documento_id');
+      
+      if (!documentoControl) return;
+
+      switch (value) {
+        case 'CPF':
+          documentoControl.setValidators([Validators.required, cpfValidator]);
+          this.mascaraDocumento = '000.000.000-00'; // Máscara para CPF
+          break;
+        case 'CNH':
+          documentoControl.setValidators([Validators.required, Validators.pattern(/^\d{11}$/)]);
+          this.mascaraDocumento = '00000000000'; // Máscara para CNH
+          break;
+        case 'RG':
+          documentoControl.setValidators([Validators.required, rgValidator]);
+          this.mascaraDocumento = '00.000.000-0'; // Máscara para RG
+          break;
+        default:
+          documentoControl.clearValidators();
+          this.mascaraDocumento = ''; // Limpa a máscara se nenhum documento for selecionado
+          break;
+      }
+      documentoControl.updateValueAndValidity(); // Atualiza a validação do campo documento
+    });
+  }
 }
