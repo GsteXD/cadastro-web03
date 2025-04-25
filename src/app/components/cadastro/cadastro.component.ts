@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControlOptions, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
@@ -23,6 +23,7 @@ export class CadastroComponent implements OnInit {
   mascaraTelefone: string = '00000-0000';
 
   constructor(private fb: FormBuilder, private router: Router) {
+
     this.cadastroForm = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(6)]],
       email: ['', [Validators.required, Validators.email]],
@@ -33,15 +34,25 @@ export class CadastroComponent implements OnInit {
       senha: ['', [Validators.required, Validators.minLength(6), senhaValidator]],
       senhaConfirm: ['', Validators.required],
       notifyCheck: [false]
-    }, { validators: senhaMatchValidator }); 
+    }, { validators: [senhaMatchValidator] } as AbstractControlOptions); 
   }
 
-  onSubmit(): void {
+  private checkInvalidInputs(formGroup: FormGroup): void {
+    Object.values(formGroup.controls).forEach(control => {
+      if (control instanceof FormGroup) {
+        this.checkInvalidInputs(control);
+      } else {
+        control.markAsTouched(); // Marca o controle como tocado para exibir mensagens de erro
+      }
+    });
+  }
+
+  onSubmit(): void { //TODO: Implementar o envio dos dados para o backend
     if (this.cadastroForm.valid) {
       console.log('Dados enviados:', this.cadastroForm.value);
       this.router.navigate(['/mainPage']); // Navega para a página inicial
     } else {
-      alert('Por favor, preencha todos os campos obrigatórios corretamente.');
+      this.checkInvalidInputs(this.cadastroForm); // Marca todos os campos como tocados para exibir mensagens de erro
     }
   }
 

@@ -23,7 +23,7 @@ export function senhaMatchValidator(form: FormGroup): ValidationErrors | null {
     const senha = form.get('senha')?.value;
     const senhaConfirm = form.get('senhaConfirm')?.value;
   
-    if (senha !== senhaConfirm) {
+    if (senha !== senhaConfirm || senhaConfirm === '') {
       form.get('senhaConfirm')?.setErrors({ mismatch: true });
       return { mismatch: true };
     } else {

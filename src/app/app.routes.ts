@@ -8,7 +8,7 @@ import { BuscaComponent } from './components/busca/busca.component';
 export const routes: Routes = [
   { 
     path:'',
-    redirectTo: '/mainPage', //Redirecionamento Padrão
+    redirectTo: 'mainPage', //Redirecionamento Padrão
     pathMatch:'full'
   },
 
