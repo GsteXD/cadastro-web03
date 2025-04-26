@@ -20,7 +20,13 @@ export class MainPageComponent implements OnInit{
   constructor(private produtoService: ProdutoService) { }
   
   ngOnInit(): void {
-    // Achata o array bidimensional em um array unidimensional
-    this.produtos = this.produtoService.getProdutos();
+    this.produtoService.getProdutos().subscribe({
+      next: (produtos) => {
+        this.produtos = produtos; // Atualiza o array bidimensional com os dados da API
+      },
+      error: (err) => {
+        console.error('Erro ao carregar os produtos:', err);
+      }
+    });
   }
 }

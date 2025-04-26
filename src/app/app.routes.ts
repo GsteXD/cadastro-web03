@@ -4,6 +4,7 @@ import { MainPageComponent } from './components/main-page/main-page.component';
 import { LoginComponent } from './components/login/login.component';
 import { DetalhesComponent } from './components/detalhes/detalhes.component';
 import { BuscaComponent } from './components/busca/busca.component';
+import { RenderMode } from '@angular/ssr';
 
 export const routes: Routes = [
   { 
@@ -33,7 +34,7 @@ export const routes: Routes = [
   {
     path:'detalhes/:id',
     component:DetalhesComponent,
-    data: { title: 'Detalhes do Produto - QMask!' }
+    data: { title: 'Detalhes do Produto - QMask!', RenderMode: 'ssr' }
   },
 
   {

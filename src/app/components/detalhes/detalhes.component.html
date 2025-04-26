@@ -1,5 +1,5 @@
 <div class="container pt-5">
-    <div *ngIf="produto" class="row align-items-center">
+    <div *ngIf="produto; else notFound" class="row align-items-center">
         <!-- Coluna para a imagem -->
         <div class="col-12 col-md-4 text-center">
             <img [src]="produto.imagem" alt="{{ produto.nome }}" class="img-fluid rounded">
@@ -19,9 +19,9 @@
         </div>
     </div>
 
-    <div *ngIf="!produto">
+    <ng-template #notFound>
         <h2>Produto não encontrado!</h2>
-    </div>
+    </ng-template>
 </div>
 
 <app-cart></app-cart>

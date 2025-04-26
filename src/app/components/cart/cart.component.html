@@ -4,7 +4,7 @@
   <button class="btn btn-danger close-btn" (click)="cartService.toggleCart()">X</button>
   <h4>Carrinho de Compras</h4>
   <ul class="list-group">
-    <li *ngFor="let item of cartService.getItems()" class="list-group-item d-flex align-items-center">
+    <li *ngFor="let item of (items$ | async)" class="list-group-item d-flex align-items-center">
       <button class="btn btn-danger remove-item" (click)="cartService.removeItem(item.id)">-</button>
       <span>{{ item.nome }} - R$ {{ item.preco }}</span>
 
@@ -19,8 +19,8 @@
 
   <!--Total do Carrinho-->
   <div class="cart-total">
-      <strong>Total:</strong> R$ {{ cartService.getTotal() | number: '1.2-2' }} <!--Mostra sempre 2 casas decimais-->
-  </div>
+    <strong>Total:</strong> R$ {{ (total$ | async) | number:'1.2-2' }}
+</div>
 
   <!-- Botão de Finalizar Pedido -->
   <div class="text-center mt-3">

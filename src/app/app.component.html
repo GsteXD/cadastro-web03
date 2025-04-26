@@ -26,9 +26,11 @@
             <button class="btn btn-warning position-relative p-2 cart-btn" (click)="cartService.toggleCart()">
                 <span class="cart-text">🛒 Carrinho</span>
                 <span class="cart-icon d-none">🛒</span>
-                <span *ngIf="cartService.getTotalItems() > 0" 
-                    class="badge bg-danger position-absolute top-0 start-100 translate-middle">
-                    {{ cartService.getTotalItems() }}
+                <span *ngIf="(totalItems$ | async) as totalItems">
+                  <span *ngIf="totalItems > 0" 
+                        class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+                    {{ totalItems }}
+                  </span>
                 </span>
             </button>
              

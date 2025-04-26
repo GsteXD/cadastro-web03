@@ -15,7 +15,11 @@ export class CarouselComponent {
   produtosUnicos: Produto[] = []; // Array unidimensional de produtos
 
   ngOnInit(): void {
-    // Achata o array bidimensional em um array unidimensional
-    this.produtosUnicos = this.produtos.flat();
+    if (this.produtos && Array.isArray(this.produtos)) {
+      this.produtosUnicos = this.produtos.flat();
+    } else {
+      console.warn('O array de produtos não foi inicializado corretamente.');
+      this.produtosUnicos = []; // Inicializa como array vazio
+    }
   }
 }

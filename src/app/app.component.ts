@@ -5,16 +5,23 @@ import { CartComponent } from './components/cart/cart.component';
 import { CommonModule } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { filter, map, mergeMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, CartComponent, CommonModule],
+  imports: [
+    RouterOutlet, 
+    RouterLink, 
+    CartComponent, 
+    CommonModule,
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
   searchTerm: string = ''; // Termo de busca
+  totalItems$: Observable<number> = of(0);
 
   constructor(
     public cartService: CartService,
@@ -36,22 +43,7 @@ export class AppComponent implements OnInit{
     }
   }
   
-  // Aplicação dos títulos de forma dinâmica
   ngOnInit(): void {
-    this.router.events
-      .pipe(
-        filter(event => event instanceof NavigationEnd),
-        map(() => this.activatedRoute),
-        map(route => {
-          while (route.firstChild) route = route.firstChild;
-          return route;
-        }),
-        mergeMap(route => route.data)
-      )
-      .subscribe(data => {
-        if (data['title']) {
-          this.titleService.setTitle(data['title']);
-        }
-      });
+    this.totalItems$ = this.cartService.getTotalItems();
   }
 }

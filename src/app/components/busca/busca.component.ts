@@ -4,6 +4,7 @@ import { ProdutoService } from '../../services/produto/produto.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Produto } from '../../models/produto.model';
+import { switchMap, take } from 'rxjs';
 
 @Component({
   selector: 'app-busca',
@@ -20,16 +21,22 @@ export class BuscaComponent implements OnInit {
     private produtoService: ProdutoService,
    ) {}
 
-  ngOnInit(): void {
-    // Captura o termo da URL
-    this.route.queryParams.subscribe(params => {
-      this.searchTerm = params['q'] || '';
-      this.filteredItems = this.produtoService
-        .getProdutos()
-        .flat()
-        .filter(produto =>
+   ngOnInit(): void {
+    this.route.queryParams.pipe(
+      switchMap(params => {
+        this.searchTerm = params['q'] || '';
+        return this.produtoService.getProdutos().pipe(take(1));
+      })
+    ).subscribe({
+      next: (produtos) => {
+        const produtosArray = produtos as Produto[];
+        this.filteredItems = produtosArray.flat().filter(produto =>
           produto.nome.toLowerCase().includes(this.searchTerm.toLowerCase())
         );
+      },
+      error: (err) => {
+        console.error('Erro ao carregar os produtos:', err);
+      }
     });
   }
 }
