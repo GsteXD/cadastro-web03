@@ -66,13 +66,31 @@ app.get('/api/pedido/:id', (req, res) => {
 });
 
 //POST ==============================================================
-app.post('/api/cesto', (req, res) => { //Cesto
-  const item = req.body;
-  cesto.push(item);
-  res.status(201).json({ message: 'Item adicionado ao cesto', item });
+app.post('/api/cesto/:id', (req, res) => { //Cesto
+  const { id } = req.params;
+  const { quantidadeAdicionada } = req.body;
+
+  if (!quantidadeAdicionada || quantidadeAdicionada <= 0) {
+    return res.status(400).json({ message: 'Quantidade inválida' });
+  }
+
+  const produto = produtos.flat().find((p) => p.id === parseInt(id, 10));
+  if (produto != null) {
+    //Checa se produto já consta no cesto
+    const produtoExistente = cesto.find((item) => item.id === produto.id);
+    if (produtoExistente) {
+      produtoExistente.quantidade += quantidadeAdicionada;
+    } else {
+      cesto.push({ ...produto, quantidade:quantidadeAdicionada })
+    }
+
+    return res.status(201).json({ message: 'Item adicionado ao cesto:', produto });
+  }
+
+  return res.status(404).json({message: `Produto com ID ${id} não encontrado` })
 });
 
-app.post('/api/pedidos', (req, res) => { //Pedido
+app.post('/api/pedidos', (req, res) => { //Pedido ======================
   const pedidos = {
     id: pedido.length + 1,
     itens: [...cesto], // Copia os itens do cesto

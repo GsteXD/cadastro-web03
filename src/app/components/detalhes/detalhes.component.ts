@@ -20,8 +20,8 @@ export class DetalhesComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private cartService: CartService,
-    private produtoService: ProdutoService
+    private produtoService: ProdutoService,
+    public cartService: CartService
   ) {}
 
   ngOnInit(): void {
@@ -34,23 +34,6 @@ export class DetalhesComponent implements OnInit {
       error: (err) => {
         console.error(`Erro ao carregar o produto com ID ${id}:`, err);
         this.produto = null; // Define como null em caso de erro
-      }
-    });
-  }
-
-  addCarrinho(): void {
-    if (!this.produto) {
-      console.error('Nenhum produto para adicionar ao carrinho.');
-      return;
-    }
-  
-    this.cartService.addItem(this.produto).subscribe({
-      next: () => {
-        console.log('Produto adicionado ao carrinho:', this.produto);
-        this.cartService.openCart(); // Abre o carrinho após adicionar o item
-      },
-      error: (err) => {
-        console.error('Erro ao adicionar o produto ao carrinho:', err);
       }
     });
   }

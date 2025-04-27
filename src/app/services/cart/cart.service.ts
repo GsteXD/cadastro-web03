@@ -54,7 +54,9 @@ export class CartService {
 
   //Adiciona o item no carrinho e incrementa o contador em 1
   addItem(produto: any): Observable<any> {
+    console.log("Diamante");
     const item = { ...produto, quantidade: 1 }; // Adiciona a quantidade inicial
+    console.log(item);
     return this.AddCart(item).pipe(
       tap(() => console.log('Item adicionado ao carrinho:', item)),
       catchError((error) => {
