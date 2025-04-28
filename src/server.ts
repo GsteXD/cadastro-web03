@@ -19,6 +19,14 @@ const pedido: any[] = [];
 
 app.use(express.json());
 
+app.use(
+  express.static(browserDistFolder, {
+    maxAge: '1y',
+    index: false,
+    redirect: false,
+  }),
+);
+
 const produtos = [
   [
     { id: 1, nome: 'Produto 1', preco: 'R$ 99,00', imagem: '/assets/images/produtos/Mask1.gif', descricao: 'Quando é necessário demonstrar neutralidade.' },
@@ -42,7 +50,7 @@ app.get('/api/produtos/:id', (req, res) => { //Produto
   const id = parseInt(req.params.id, 10); // Converte o ID para número
   const produto = produtos.flat().find((p) => p.id === id); // Busca o produto no array bidimensional
 
-  if (produto) {
+  if (produtos) {
     res.json(produto); 
   } else {
     res.status(404).json({ message: `Produto com ID ${id} não encontrado.` }); 
@@ -59,7 +67,7 @@ app.get('/api/pedido/:id', (req, res) => {
   const { id } = req.params;
   const pedidos = pedido.find((p) => p.id === parseInt(id, 10)); // --> Recupera um específico
   if (pedido) {
-    res.json(pedido);
+    res.json(pedidos);
   } else {
     res.status(404).json({message: `Pedido com o ID ${id} não encontrado` });
   }
@@ -114,15 +122,32 @@ app.delete('/api/cesto/:id', (req, res) => { //Cesto
   }
 });
 
-app.use(
-  express.static(browserDistFolder, {
-    maxAge: '1y',
-    index: false,
-    redirect: false,
-  }),
-);
+//PATCHS (UPDATES) ==================================================
+app.patch('/api/cesto/:id', (req, res) => {
+  const { id } = req.params;
+  const { novaQuantidade } = req.body;
 
-app.use('*', (req, res, next) => {
+  const produtoExistente = cesto.find((item) => item.id === parseInt(id, 10));
+
+  if (!produtoExistente) {
+    return res.status(404).json({ message: `Item com ID: ${id} não encontrado` });
+  }
+  if (novaQuantidade <= 0 ) {
+    const index = cesto.indexOf(produtoExistente);
+    cesto.splice(index, 1);
+    return res.json({ message: `Item removido do cesto` });
+  }
+
+  produtoExistente.quantidade = novaQuantidade;
+  return res.json({ message: 'Quantidade atualizada', produto: produtoExistente });
+});
+
+app.get(['*.js', '*.css', '*.ico', '*.png', '*.jpg', '*.jpeg', '*.svg'], (req, res) => {
+  console.warn('Arquivo estático não encontrado:', req.url);
+  res.status(404).end();
+});
+
+app.get('*', (req, res, next) => {
   angularApp
     .handle(req)
     .then((response) => {
@@ -137,7 +162,6 @@ app.use('*', (req, res, next) => {
       res.status(500).send('Erro interno no servidor');
     });
 });
-
 
 /**
  * Start the server if this module is the main entry point.
