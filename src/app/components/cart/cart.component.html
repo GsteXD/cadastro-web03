@@ -1,17 +1,17 @@
 <br>
-<div class="cart-sidebar" [class.show]="cartService.getCartVisibility()">
+<div class="cart-sidebar" [class.show]="isCartVisible">
   <!--Lista do Carrinho-->
-  <button class="btn btn-danger close-btn" (click)="cartService.toggleCart()">X</button>
+  <button class="btn btn-danger close-btn" (click)="toggleCart()">X</button>
   <h4>Carrinho de Compras</h4>
   <ul class="list-group">
     <li *ngFor="let item of (items$ | async)" class="list-group-item d-flex align-items-center">
-      <button class="btn btn-danger remove-item" (click)="cartService.removeItem(item.id)">-</button>
+      <button class="btn btn-danger remove-item" (click)="removeItem(item.id)">-</button>
       <span>{{ item.nome }} - R$ {{ item.preco }}</span>
 
       <div class="quantity-control">
-          <button class="btn btn-sm btn-warning" (click)="cartService.removeOneItem(item)">-</button>
+          <button class="btn btn-sm btn-warning" (click)="removeOneItem(item)">-</button>
           <span class="quantity">{{ item.quantidade }}</span>
-          <button class="btn btn-sm btn-warning" (click)="cartService.addItem(item)">+</button>
+          <button class="btn btn-sm btn-warning" (click)="addOneItem(item)">+</button>
       </div>
 
     </li>

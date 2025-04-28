@@ -15,7 +15,7 @@
             <h1>{{ produto.nome }}</h1>
             <p><strong>Preço:</strong> {{ produto.preco }}</p>
             <p>{{ produto.descricao }}</p>
-            <button (click)="cartService.addItem(produto)" class="btn btn-primary mt-3">Comprar</button>
+            <button (click)="adicionarAoCarrinho(produto, 1)" class="btn btn-primary mt-3">Comprar</button>
         </div>
     </div>
 
@@ -23,5 +23,3 @@
         <h2>Produto não encontrado!</h2>
     </ng-template>
 </div>
-
-<app-cart></app-cart>

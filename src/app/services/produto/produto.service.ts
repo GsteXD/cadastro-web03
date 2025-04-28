@@ -19,6 +19,10 @@ export class ProdutoService {
     );
   }
   getProdutoById(id: number): Observable<any> {
+    if (!id || isNaN(id)) {
+      console.error(`ID inválido: ${id}`);
+      return of(null);
+    }
     console.log(`Buscando produto com ID ${id}`);
     return this.http.get<any>(`${this.apiUrl}/${id}`).pipe(
       catchError((error) => {
