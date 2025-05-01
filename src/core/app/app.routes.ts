@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { CadastroComponent } from './components/cadastro/cadastro.component';
-import { MainPageComponent } from './components/main-page/main-page.component';
-import { LoginComponent } from './components/login/login.component';
-import { DetalhesComponent } from './components/detalhes/detalhes.component';
-import { BuscaComponent } from './components/busca/busca.component';
+import { CadastroComponent } from '../../app/components/cadastro/cadastro.component';
+import { MainPageComponent } from '../../app/components/main-page/main-page.component';
+import { LoginComponent } from '../../app/components/login/login.component';
+import { DetalhesComponent } from '../../app/components/detalhes/detalhes.component';
+import { BuscaComponent } from '../../app/components/busca/busca.component';
 import { RenderMode } from '@angular/ssr';
 
 export const routes: Routes = [

@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet, Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { CartService } from './services/cart/cart.service';
-import { CartComponent } from './components/cart/cart.component';
+import { CartService } from '../../app/services/cart/cart.service';
+import { CartComponent } from '../../app/components/cart/cart.component';
 import { CommonModule } from '@angular/common';
 import { Title } from '@angular/platform-browser';
-import { filter, map, mergeMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 
 @Component({

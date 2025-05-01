@@ -14,8 +14,8 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/cadastro-web03",
-            "index": "src/index.html",
-            "browser": "src/main.ts",
+            "index": "src/core/main/index.html",
+            "browser": "src/core/main/main.ts",
             "polyfills": [
               "zone.js"
             ],
@@ -24,13 +24,13 @@
               "src/assets/images"
             ],
             "styles": [
-              "src/styles.css"
+              "src/core/main/styles.css"
             ],
             "scripts": [],
-            "server": "src/main.server.ts",
+            "server": "src/core/main/main.server.ts",
             "outputMode": "server",
             "ssr": {
-              "entry": "src/server.ts"
+              "entry": "src/core/main/server.ts"
             },
             "baseHref": "/",
             "deployUrl": "/"
@@ -89,7 +89,7 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/core/main/styles.css"
             ],
             "scripts": []
           }
