@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ProdutoService } from '../../services/produto/produto.service';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { Produto } from '../../models/produto.model';
 import { switchMap, take } from 'rxjs';
 
@@ -30,7 +29,7 @@ export class BuscaComponent implements OnInit {
     ).subscribe({
       next: (produtos) => {
         const produtosArray = produtos as Produto[];
-        this.filteredItems = produtosArray.flat().filter(produto =>
+        this.filteredItems = produtosArray.filter(produto =>
           produto.nome.toLowerCase().includes(this.searchTerm.toLowerCase())
         );
       },

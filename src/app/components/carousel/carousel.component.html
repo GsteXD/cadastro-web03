@@ -1,7 +1,7 @@
-<div *ngIf="produtosUnicos.length > 0; else noProdutos" id="carouselProdutos" class="carousel slide" data-bs-interval="3000" data-bs-ride="carousel">
+<div *ngIf="carouselProdutos.length > 0; else noProdutos" id="carouselProdutos" class="carousel slide" data-bs-interval="3000" data-bs-ride="carousel">
     <div class="carousel-inner">
         <!-- Exibição dinâmica dos produtos individuais -->
-        <div *ngFor="let produto of produtosUnicos; let i = index" class="carousel-item" [class.active]="i === 0">
+        <div *ngFor="let produto of carouselProdutos; let i = index" class="carousel-item" [class.active]="i === 0">
             <div class="d-flex justify-content-center">
                 <div class="col-12">
                     <div class="card text-center">

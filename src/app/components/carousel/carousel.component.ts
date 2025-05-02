@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Produto } from '../../models/produto.model';
+import { ProdutoService } from '../../services/produto/produto.service';
 
 @Component({
   selector: 'app-carousel',
@@ -11,15 +12,19 @@ import { Produto } from '../../models/produto.model';
 })
 
 export class CarouselComponent {
-  @Input() produtos: Produto[][] = []; // Array bidimensional de produtos
-  produtosUnicos: Produto[] = []; // Array unidimensional de produtos
+  carouselProdutos: Produto[] = [];
+
+  constructor(private produtoService: ProdutoService) {}
 
   ngOnInit(): void {
-    if (this.produtos && Array.isArray(this.produtos)) {
-      this.produtosUnicos = this.produtos.flat();
-    } else {
-      console.warn('O array de produtos não foi inicializado corretamente.');
-      this.produtosUnicos = []; // Inicializa como array vazio
-    }
+    this.produtoService.getProdutos().subscribe({
+      next: (produtos) => {
+        console.log('(carouselComponent)Resposta da API:', produtos);
+        this.carouselProdutos = produtos;
+      },
+      error: (err) => {
+        console.error('Erro ao carregar os produtos:', err);
+      }
+    });
   }
 }

@@ -15,13 +15,14 @@ import { Produto } from '../../models/produto.model';
 
 //Página principal do site, onde são exibidos os produtos
 export class MainPageComponent implements OnInit{
-  produtos: Produto[][] = []; // Array unidimensional
+  produtos: Produto[] = []; // Array unidimensional
 
   constructor(private produtoService: ProdutoService) { }
   
   ngOnInit(): void {
     this.produtoService.getProdutos().subscribe({
       next: (produtos) => {
+        console.log('Resposta da API:', produtos);
         this.produtos = produtos; // Atualiza o array bidimensional com os dados da API
       },
       error: (err) => {

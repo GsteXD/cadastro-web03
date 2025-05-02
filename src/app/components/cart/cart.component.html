@@ -4,16 +4,26 @@
   <button class="btn btn-danger close-btn" (click)="toggleCart()">X</button>
   <h4>Carrinho de Compras</h4>
   <ul class="list-group">
-    <li *ngFor="let item of (items$ | async)" class="list-group-item d-flex align-items-center">
-      <button class="btn btn-danger remove-item" (click)="removeItem(item.id)">-</button>
-      <span>{{ item.nome }} - R$ {{ item.preco }}</span>
-
-      <div class="quantity-control">
+    <li *ngFor="let item of (items$ | async)" class="list-group-item d-flex justify-content-between align-items-center">
+      <div class="d-flex flex-column">
+        <strong>{{ item.nome }}</strong>
+        <div class="quantity-control mt-1">
           <button class="btn btn-sm btn-warning" (click)="removeOneItem(item)">-</button>
-          <span class="quantity">{{ item.quantidade }}</span>
+          <input
+            type="number"
+            class="form-control form-control-sm quantity-input mx-2"
+            [value]="item.quantidade"
+            (change)="onQuantidadeChange(item, quantidadeInput.value)"
+            #quantidadeInput
+            min="1"
+          />
           <button class="btn btn-sm btn-warning" (click)="addOneItem(item)">+</button>
+        </div>
       </div>
-
+      <div class="text-end">
+        <span class="d-block preco">{{ item.preco }}</span>
+        <button class="btn btn-sm btn-danger mt-2" (click)="removeItem(item.id)">Remover</button>
+      </div>
     </li>
   </ul>
 

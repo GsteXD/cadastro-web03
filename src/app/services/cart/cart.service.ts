@@ -159,14 +159,18 @@ export class CartService {
     console.log("Banana");
     return this.cartItemsSubject.asObservable().pipe(
       map((items) =>
-        items.reduce(
-          (total, item) =>
-            total + item.quantidade * parseFloat(item.preco.replace('R$', '').replace(',', '.')),
-          0
-        )
+        items.reduce((total, item) => {
+          if (!item.preco) return total; // evita erro se preco estiver ausente
+          const preco =
+            typeof item.preco === 'string'
+              ? parseFloat(item.preco.replace('R$', '').replace(',', '.'))
+              : item.preco; // já é número
+          return total + item.quantidade * preco;
+        }, 0)
       )
     );
   }
+  
 
   //Pega o total baseado na quantidade de um mesmo produto
   getTotalItems(): Observable<number> {

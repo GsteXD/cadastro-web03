@@ -37,6 +37,16 @@ export class CartComponent implements OnInit {
     });
   }
 
+  onQuantidadeChange(item: any, novaQuantidade: string) {
+    const quantidade = parseInt(novaQuantidade, 10);
+    if (isNaN(quantidade) || quantidade <= 0) return;
+  
+    this.cartService.updateItemQuantity(item.id, quantidade).subscribe({
+      next: () => console.log(`Quantidade de ${item.nome} atualizada para ${quantidade}`),
+      error: (err) => console.error('Erro ao atualizar quantidade', err)
+    });
+  }
+
   addItem(item: any): void {
     this.cartService.AddCart(item).subscribe({
       next: () => console.log('(cartComponent) Item adicionado ao carrinho', item),
