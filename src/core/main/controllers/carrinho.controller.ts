@@ -41,3 +41,8 @@ export const removeItem = (req: Request<{ id: string }>, res: Response) => {
   carrinhoService.removeItem(id);
   return res.json({ message: `Item com ID ${id} removido do cesto` });
 };
+
+export const cleanCesto = (req: Request, res: Response) => {
+  carrinhoService.clearCesto();
+  return res.json({ message: 'Carrinho limpo!' })
+};

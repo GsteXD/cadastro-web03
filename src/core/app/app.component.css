@@ -31,8 +31,10 @@ ul.topnav li.right {float: right;}
 }
 
 .badge {
-    font-size: 0.8rem;
-    padding: 5px;
+    font-size: 15px;
+    border-radius: 40px;
+    margin-top: 5px;
+    padding: 0.25em 0.4em;
 }
 
 @media (max-width: 576px) { /* Aplica a regra em telas menores que 576px (celulares) */

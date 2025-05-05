@@ -33,12 +33,13 @@ app.get('/api/cesto', carrinhoController.getCesto);
 app.post('/api/cesto/:id', carrinhoController.addItem);
 app.patch('/api/cesto/:id', carrinhoController.updateQuantidade);
 app.delete('/api/cesto/:id', carrinhoController.removeItem);
+app.delete('/api/cesto', carrinhoController.cleanCesto);
 
 app.get('/api/produtos', produtoController.getProdutos);
 app.get('/api/produtos/:id', produtoController.getProdutoById);
 
 app.get('/api/pedidos', pedidoController.getPedidos);
-app.get('/api/pedido/:id', pedidoController.getPedidoById);
+app.get('/api/pedidos/:id', pedidoController.getPedidoById);
 app.post('/api/pedidos', pedidoController.criarPedido);
 
 // Tratamento para arquivos estáticos não encontrados

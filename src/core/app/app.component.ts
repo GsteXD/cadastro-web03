@@ -4,7 +4,7 @@ import { CartService } from '../../app/services/cart/cart.service';
 import { CartComponent } from '../../app/components/cart/cart.component';
 import { CommonModule } from '@angular/common';
 import { Title } from '@angular/platform-browser';
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +20,7 @@ import { Observable, of } from 'rxjs';
 })
 export class AppComponent implements OnInit{
   searchTerm: string = ''; // Termo de busca
-  totalItems$: Observable<number> = of(0);
+  totalItems$: Observable<any> = of(0);
 
   constructor(
     public cartService: CartService,
@@ -43,6 +43,8 @@ export class AppComponent implements OnInit{
   }
   
   ngOnInit(): void {
-    this.totalItems$ = this.cartService.getTotalItems();
+    this.totalItems$ = this.cartService.cartItems$.pipe(
+      map(items => items.reduce((total, item) => total + item.quantidade, 0))
+    );
   }
 }

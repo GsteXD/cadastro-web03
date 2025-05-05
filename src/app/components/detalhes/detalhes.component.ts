@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { take } from 'rxjs';
+import { catchError, filter, of, Subject, switchMap, take, takeUntil } from 'rxjs';
 
 import { ProdutoService } from '../../services/produto/produto.service';
 import { CartService } from '../../services/cart/cart.service';
+import { triggerAsyncId } from 'async_hooks';
 
 @Component({
   selector: 'app-detalhes',
@@ -14,53 +15,40 @@ import { CartService } from '../../services/cart/cart.service';
   styleUrl: './detalhes.component.css'
 })
 
-export class DetalhesComponent implements OnInit {
-
-  produto: any;
+export class DetalhesComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
 
   constructor(
-    private route: ActivatedRoute,
-    private produtoService: ProdutoService,
-    public cartService: CartService
+    public route: ActivatedRoute,
+    public cartService: CartService,
+    public produtoService: ProdutoService
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(paramMap => {
-      const idParam = paramMap.get('id');
-      console.log('idParam extraído da rota:', idParam, 'SSR:', typeof window === 'undefined');
-      const id = Number(idParam);
-  
-      if (!id || isNaN(id)) {
-        console.error(`ID inválido: ${idParam}`);
-        this.produto = null;
-        return;
+    this.route.paramMap.pipe(take(1)).subscribe(params => {
+      const id = Number(params.get('id'));
+      if(id) {
+        this.produtoService.getProdutoById(id).subscribe();
       }
-  
-      this.cartService.loadCart().subscribe();
-  
-      this.produtoService.getProdutoById(id).pipe(take(1)).subscribe({
-        next: (produto) => {
-          this.produto = produto;
-          console.log('Produto carregado:', this.produto);
-        },
-        error: (err) => {
-          console.error(`Erro ao carregar o produto com ID ${id}:`, err);
-          this.produto = null;
-        }
-      });
+    });
+    this.cartService.fetchCart();
+  }
+
+  addCart(quantidade: number = 1): void {
+    this.produtoService.currentProduct$.pipe(
+      take(1),
+      filter(produto => !!produto),
+      switchMap(produto => this.cartService.addItem(produto, quantidade)),
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: () => this.cartService.openCart(),
+      error: (err) => console.error('Erro ao adicionar item:', err)
     });
   }
-  adicionarAoCarrinho(produto:any, quantidade:number): void {
-    const item = { ...produto, quantidade };
-    this.cartService.AddCart(item).subscribe({
-      next: () => {
-        console.log('Produto adicionado ao carrinho:', item);
-        this.cartService.openCart();
-        this.cartService.loadCart().subscribe(() => {
-          console.log('(detalhes) Carrinho atualizado');
-        });
-      },
-      error: (err) => console.error('(detalhes)Erro ao adicionar no carrinho:', err)
-    });
-  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+}
+
 }

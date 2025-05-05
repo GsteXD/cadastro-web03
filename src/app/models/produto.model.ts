@@ -5,3 +5,8 @@ export interface Produto {
     imagem: string;
     descricao: string;
 }
+
+export interface CartItem extends Produto {
+    quantidade: number;
+    precoNumerico: number; 
+}

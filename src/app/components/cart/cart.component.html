@@ -1,39 +1,62 @@
-<br>
-<div class="cart-sidebar" [class.show]="isCartVisible">
-  <!--Lista do Carrinho-->
-  <button class="btn btn-danger close-btn" (click)="toggleCart()">X</button>
-  <h4>Carrinho de Compras</h4>
-  <ul class="list-group">
-    <li *ngFor="let item of (items$ | async)" class="list-group-item d-flex justify-content-between align-items-center">
-      <div class="d-flex flex-column">
-        <strong>{{ item.nome }}</strong>
-        <div class="quantity-control mt-1">
-          <button class="btn btn-sm btn-warning" (click)="removeOneItem(item)">-</button>
-          <input
-            type="number"
-            class="form-control form-control-sm quantity-input mx-2"
-            [value]="item.quantidade"
-            (change)="onQuantidadeChange(item, quantidadeInput.value)"
-            #quantidadeInput
-            min="1"
-          />
-          <button class="btn btn-sm btn-warning" (click)="addOneItem(item)">+</button>
+<ng-container *ngIf="{
+    items: items$ | async,
+    loading: loading$ | async,
+    isOpen: isCartOpen$ | async,
+    total: (total$ | async) || 0
+  } as data">
+  <!-- Carrinho -->
+  <div class="cart-sidebar" [class.show]="data.isOpen">
+    <button class="close-btn" (click)="cartService.toggleCart()">X</button>
+    <h4>Carrinho de Compras</h4>
+
+    <!-- Conteúdo -->
+    <ng-container>
+      <div *ngIf="!data.items?.length" class="empty-cart"> 
+        Carrinho vazio <!-- Carrinho vazio -->
+      </div>
+
+      <ul *ngIf="data.items?.length" class="list-group">
+        <li *ngFor="let item of data.items" class="list-group-item">
+          <div class="item-row">
+            <div style="display: flex; justify-content: space-between;">
+              <span class="item-name">{{ item.nome }}</span>
+              <span class="item-preco">{{ item.preco }}</span>
+            </div>
+            <div class="quantity-control" style="margin-top: 5px;">
+              <button 
+                class="quantity-controller"
+                (click)="updateQuantidade(item.id, item.quantidade - 1)"
+                [disabled]="item.quantidade <= 1">-</button>
+              <input #quantityInput 
+                class="quantity-input" 
+                type="number" 
+                (change)="updateQuantidade(item.id, quantityInput.value)" 
+                [value]="item.quantidade" 
+                min="1" 
+                step="1">   
+              <button 
+                class="quantity-controller" 
+                (click)="updateQuantidade(item.id, item.quantidade + 1)"
+                [disabled]="(cartService.loading$ | async)">+</button>
+              <button class="remove-item" (click)="removeProduto(item.id)"> Remover </button>
+            </div>
+          </div>
+        </li>
+      </ul> 
+
+      <!-- Botão de Finalizar -->
+      <div>
+        <div class="linha-horizontal"></div>
+        <button 
+          class="btn-finalizar" 
+          (click)="cartService.finalizeOrder()"
+          [disabled]="!data.items?.length">
+        Finalizar Compra</button>
+        <div class="preco-total">
+          <strong>Total:</strong> {{ data.total | currency:'BRL' }}
         </div>
-      </div>
-      <div class="text-end">
-        <span class="d-block preco">{{ item.preco }}</span>
-        <button class="btn btn-sm btn-danger mt-2" (click)="removeItem(item.id)">Remover</button>
-      </div>
-    </li>
-  </ul>
+    </div>
 
-  <!--Total do Carrinho-->
-  <div class="cart-total">
-    <strong>Total:</strong> R$ {{ (total$ | async) | number:'1.2-2' }}
-</div>
-
-  <!-- Botão de Finalizar Pedido -->
-  <div class="text-center mt-3">
-    <button class="finalizar-btn" (click)="cartService.finalizarPedido()">Finalizar Pedido</button>
+    </ng-container>
   </div>
-</div>
+</ng-container>
