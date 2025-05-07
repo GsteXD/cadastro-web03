@@ -11,6 +11,7 @@ import { fileURLToPath } from 'node:url';
 import * as carrinhoController from './controllers/carrinho.controller';
 import * as produtoController from './controllers/produto.controller';
 import * as pedidoController from './controllers/pedido.controller';
+import * as usuarioController from './controllers/usuario.controller';
 
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
@@ -41,6 +42,9 @@ app.get('/api/produtos/:id', produtoController.getProdutoById);
 app.get('/api/pedidos', pedidoController.getPedidos);
 app.get('/api/pedidos/:id', pedidoController.getPedidoById);
 app.post('/api/pedidos', pedidoController.criarPedido);
+
+app.post('/api/usuario/login', usuarioController.loginUsuario);
+app.post('/api/usuario/cadastrar', usuarioController.criarUsuario);
 
 // Tratamento para arquivos estáticos não encontrados
 app.get(['*.js', '*.css', '*.ico', '*.png', '*.jpg', '*.jpeg', '*.svg'], (req, res) => {

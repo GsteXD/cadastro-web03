@@ -8,6 +8,7 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { cpfValidator } from './validadores/cpfValidador';
 import { rgValidator } from './validadores/rgValidador';
 import { senhaValidator, senhaMatchValidator } from './validadores/senhaValidador';
+import { CadastroService } from '../../services/usuario/cadastro.service';
 
 @Component({
   selector: 'app-cadastro',
@@ -22,7 +23,11 @@ export class CadastroComponent implements OnInit {
   mascaraDocumento: string = '';
   mascaraTelefone: string = '00000-0000';
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder, 
+    private router: Router,
+    private cadastroService: CadastroService
+  ) {
 
     this.cadastroForm = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(6)]],
@@ -50,7 +55,12 @@ export class CadastroComponent implements OnInit {
   onSubmit(): void { //TODO: Implementar o envio dos dados para o backend
     if (this.cadastroForm.valid) {
       console.log('Dados enviados:', this.cadastroForm.value);
-      this.router.navigate(['/mainPage']); // Navega para a página inicial
+      this.cadastroService.cadastrarUsuario(this.cadastroForm.value).subscribe({
+        next: () => this.router.navigate(['/mainPage']), // Navega para a página inicial
+        error: (err) => {
+          console.error('Erro no cadastro:', err);
+        }
+      });
     } else {
       this.checkInvalidInputs(this.cadastroForm); // Marca todos os campos como tocados para exibir mensagens de erro
     }
