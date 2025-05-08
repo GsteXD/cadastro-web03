@@ -49,7 +49,7 @@
         <div class="linha-horizontal"></div>
         <button 
           class="btn-finalizar" 
-          (click)="cartService.finalizeOrder()"
+          (click)="finalizarPedido()"
           [disabled]="!data.items?.length">
         Finalizar Compra</button>
         <div class="preco-total">

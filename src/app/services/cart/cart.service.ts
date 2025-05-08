@@ -3,6 +3,7 @@ import { CartItem, Produto } from '../../models/produto.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
+import { UsuarioService } from '../usuario/usuario.service';
 
 @Injectable({ providedIn: 'root' })
 //Funções para a aba de carrinho
@@ -24,7 +25,11 @@ export class CartService {
     ORDERS: '/api/pedidos'
   };
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(
+    private http: HttpClient, 
+    private router: Router,
+    private usuarioService: UsuarioService
+  ) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationStart)
     ).subscribe(() => {
@@ -102,13 +107,28 @@ export class CartService {
   }
 
   finalizeOrder(): Observable<void> {
+    //Verifica se o carrinho está vazio
     if (this.cartItemsSubject.value.length === 0) {
       return throwError(() => new Error('Carrinho Vazio!'));
     }
 
+    //Verifica se o usuário está logado
+    if(!this.usuarioService.isLoggedIn()) {
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: '/checkout' }
+      });
+      return of();
+    }
+
     this.loadingSubject.next(true);
-    return this.http.post(`${this.API_URLS.ORDERS}`, { items: this.cartItemsSubject.value }).pipe(
+    return this.http.post(`${this.API_URLS.ORDERS}`, { 
+      items: this.cartItemsSubject.value, 
+      token: this.usuarioService.getToken() 
+    }).pipe(
       switchMap(() => this.fetchCart()),
+      tap(() => {
+        this.router.navigate(['/checkout']); //redireciona para o checkout
+      }),
       catchError(error => {
         console.error('Erro ao finalizar o pedido:', error);
         return throwError(() => error);

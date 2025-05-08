@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, ActivatedRoute, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 import { UsuarioService } from '../../services/usuario/usuario.service';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CartService } from '../../services/cart/cart.service';
+import { CartItem } from '../../models/produto.model';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,9 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
-    private router: Router
+    private cartService: CartService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.loginForm = this.fb.group({
       emailLogin: ['', [Validators.required, Validators.email]],
@@ -34,7 +37,29 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       console.log('Logando usuário:', this.loginForm.value);
       this.usuarioService.loginUsuario(this.loginForm.value).subscribe({
-        next: () => this.router.navigate(['/mainPage']), // Navega para a página inicial
+        next: () => {
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/mainPage';
+          const pendingCart = localStorage.getItem('pendingCart');
+
+          if (pendingCart && returnUrl === '/checkout') {
+            try {
+              const items = JSON.parse(pendingCart);
+              this.cartService.fetchCart().subscribe(() => {
+                // Adiciona itens pendentes ao carrinho existente
+                items.forEach((item: CartItem) => {
+                  this.cartService.addItem(item, item.quantidade).subscribe();
+                });
+                localStorage.removeItem('pendingCart');
+                this.router.navigate([returnUrl]);
+              });
+            } catch (err) {
+              console.error('Erro ao restaurar carrinho:', err);
+              this.router.navigate([returnUrl]);
+            }
+          } else {
+            this.router.navigate([returnUrl]);
+          }
+        },
         error: (err) => {
           console.error('Erro no login:', err);
           this.loginError = true;

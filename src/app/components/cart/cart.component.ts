@@ -72,6 +72,7 @@ export class CartComponent implements OnInit, OnDestroy {
     this.cartService.finalizeOrder().pipe(
       takeUntil(this.destroy$)
     ).subscribe({
+      next: () => console.log('Pedido finalizado com sucesso!'),
       error: (err) => console.error('Falha no pedido:', err)
     });
   }

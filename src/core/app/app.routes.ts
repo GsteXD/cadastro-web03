@@ -5,6 +5,7 @@ import { LoginComponent } from '../../app/components/login/login.component';
 import { DetalhesComponent } from '../../app/components/detalhes/detalhes.component';
 import { BuscaComponent } from '../../app/components/busca/busca.component';
 import { RenderMode } from '@angular/ssr';
+import { CheckoutComponent } from '../../app/components/checkout/checkout.component';
 
 export const routes: Routes = [
   { 
@@ -41,5 +42,11 @@ export const routes: Routes = [
     path: 'busca',
     component: BuscaComponent,
     data: { title: 'Resultados de Busca - QMask!' }
+  },
+
+  {
+    path: 'checkout',
+    component: CheckoutComponent,
+    data: { title: 'Checkout - QMask!' }
   }
 ];
