@@ -1,5 +1,6 @@
 import { UsuarioRepository } from "../repositories/usuario.repository";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 interface cadastroUsuarioDTO {
     nome: string;
@@ -30,7 +31,14 @@ export class UsuarioService {
             return { sucesso: false, message: 'Senha inválida' };
         }
 
-        return { sucesso: true, usuario };
+        //Cria um token para persistir o login
+        const token = jwt.sign(
+            { id: usuario.id, email: usuario.email }, //Payload para gerar o token
+            'Banana', //chave secreta
+            { expiresIn: '1h' }
+        )
+
+        return { sucesso: true, usuario, token };
     }
 
     async criarUsuario(dados: any) {
