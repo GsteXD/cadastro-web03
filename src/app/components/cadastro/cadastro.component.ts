@@ -8,7 +8,7 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { cpfValidator } from './validadores/cpfValidador';
 import { rgValidator } from './validadores/rgValidador';
 import { senhaValidator, senhaMatchValidator } from './validadores/senhaValidador';
-import { CadastroService } from '../../services/usuario/cadastro.service';
+import { UsuarioService } from '../../services/usuario/usuario.service';
 
 @Component({
   selector: 'app-cadastro',
@@ -26,7 +26,7 @@ export class CadastroComponent implements OnInit {
   constructor(
     private fb: FormBuilder, 
     private router: Router,
-    private cadastroService: CadastroService
+    private usuarioService: UsuarioService
   ) {
 
     this.cadastroForm = this.fb.group({
@@ -55,7 +55,7 @@ export class CadastroComponent implements OnInit {
   onSubmit(): void { //TODO: Implementar o envio dos dados para o backend
     if (this.cadastroForm.valid) {
       console.log('Dados enviados:', this.cadastroForm.value);
-      this.cadastroService.cadastrarUsuario(this.cadastroForm.value).subscribe({
+      this.usuarioService.cadastrarUsuario(this.cadastroForm.value).subscribe({
         next: () => this.router.navigate(['/mainPage']), // Navega para a página inicial
         error: (err) => {
           console.error('Erro no cadastro:', err);
