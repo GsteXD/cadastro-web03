@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UsuarioService {
@@ -16,8 +16,12 @@ export class UsuarioService {
         if (response.token) {
           localStorage.setItem(this.TOKEN_KEY, response.token);
         }
+      },
+      catchError(error => {
+        console.error('Falha na criação de um token:', error);
+        return throwError(() => error);
       })
-    );
+    ));
   }
 
   cadastrarUsuario(data: any): Observable<any> {
