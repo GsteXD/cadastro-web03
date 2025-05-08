@@ -15,11 +15,14 @@ export class UsuarioService {
     constructor(private repo = new UsuarioRepository()) {}
 
     async autenticarUsuario(email: string, senha: string) {
-        const usuario = await this.repo.getByEmail(email);
+        const user = await this.repo.getByEmail(email);
 
-        if (!usuario) {
+        if (!user) {
             return { sucesso: false, message: 'Usuário não encontrado' };
         }
+
+        const usuario = user.get({ plain: true });
+        console.log('Usuário encontrado:', usuario);
 
         const senhaValida = await bcrypt.compare(senha, usuario.senha);
 

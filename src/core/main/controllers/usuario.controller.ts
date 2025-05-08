@@ -4,10 +4,10 @@ import { Request, Response } from "express";
 const usuarioService = new UsuarioService();
 
 export const loginUsuario = async (req: Request, res: Response) => {
-    const { email, senha } = req.body;
+    const { emailLogin, senhaLogin } = req.body;
 
     try {
-        const resultado = await usuarioService.autenticarUsuario(email, senha);
+        const resultado = await usuarioService.autenticarUsuario(emailLogin, senhaLogin);
 
         if(!resultado.sucesso) {
             return res.status(401).json({ erro: 'Usuario ou senha inválidos' });

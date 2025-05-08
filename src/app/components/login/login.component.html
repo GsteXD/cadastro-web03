@@ -1,17 +1,37 @@
 <div class="container pt-5 small">
     <h1 class="text-center">Login</h1>
-    <form>
-        <fieldset>
-            <label for="emailLogin"> Email: </label>
-            <input id="emailLogin" type="email" autocomplete="one-time-code" required>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-            <label for="senhaLogin"> Senha: </label>
-            <input id="senhaLogin" type="password" autocomplete="one-time-code" required>
+        <div *ngIf="loginError" class="error">
+            * Email ou senha incorretos
+          </div>
 
-            <input id="submitLogin" type="submit" value="Acessar"> <br>
-
-            <a class="active" routerLink="/cadastro">Não tem cadastro? Clique aqui</a> <br>
-            <a href="#">Esqueci a senha</a> 
-        </fieldset>
+        <label for="emailLogin" [class.error]="loginError">Email:</label>
+        <input
+          id="emailLogin"
+          type="email"
+          formControlName="emailLogin"
+          autocomplete="username"
+          [class.has-error]="loginError"
+          (input)="resetLoginError()"
+          required
+        >
+        
+        <label for="senhaLogin" [class.error]="loginError">Senha:</label>
+        <input
+          id="senhaLogin"
+          type="password"
+          formControlName="senhaLogin"
+          autocomplete="current-password"
+          [class.has-error]="loginError"
+          (input)="resetLoginError()"
+          required
+        >
+  
+      <button type="submit">Acessar</button> <br>
+      <a class="active" routerLink="/cadastro">Não tem cadastro? Clique aqui</a> <br>
+      <a href="#">Esqueci a senha</a> <!-- TODO: Implementar funcionalidade -->
+  
     </form>
-</div>
+  </div>
+  
