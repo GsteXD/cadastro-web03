@@ -4,7 +4,7 @@ import { CartService } from '../../app/services/cart/cart.service';
 import { CartComponent } from '../../app/components/cart/cart.component';
 import { CommonModule } from '@angular/common';
 import { Title } from '@angular/platform-browser';
-import { map, Observable, of } from 'rxjs';
+import { filter, map, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +29,24 @@ export class AppComponent implements OnInit{
     private activatedRoute: ActivatedRoute
   ) {}
 
+  private updateTitle(): void {
+    let route = this.activatedRoute;
+    while (route.firstChild) {
+      route = route.firstChild;
+    }
+
+    const title = route.snapshot.data['title'] || 'QMask!';
+    this.titleService.setTitle(title);
+  }
+
+  ngOnInit(): void {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.updateTitle();
+    })
+  }
+
   // Captura o valor do campo de texto
   onSearchInput(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
@@ -42,9 +60,4 @@ export class AppComponent implements OnInit{
     }
   }
   
-  ngOnInit(): void {
-    this.totalItems$ = this.cartService.cartItems$.pipe(
-      map(items => items.reduce((total, item) => total + item.quantidade, 0))
-    );
-  }
 }
