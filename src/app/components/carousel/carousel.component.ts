@@ -20,7 +20,7 @@ export class CarouselComponent {
     this.produtoService.getProdutos().subscribe({
       next: (produtos) => {
         console.log('(carouselComponent)Resposta da API:', produtos);
-        this.carouselProdutos = produtos;
+        this.carouselProdutos = produtos.slice(0,3); // Exibe apenas os 3 primeiros da lista
       },
       error: (err) => {
         console.error('Erro ao carregar os produtos:', err);
