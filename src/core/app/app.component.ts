@@ -20,7 +20,7 @@ import { filter, map, Observable, of } from 'rxjs';
 })
 export class AppComponent implements OnInit{
   searchTerm: string = ''; // Termo de busca
-  totalItems$: Observable<any> = of(0);
+  totalItems$: Observable<any> = of(0); // Valor inteiro para o badge
 
   constructor(
     public cartService: CartService,
@@ -31,11 +31,13 @@ export class AppComponent implements OnInit{
 
   private updateTitle(): void {
     let route = this.activatedRoute;
+    // Atualiza a rota ativa apartir do primeiro nódulo filho
     while (route.firstChild) {
       route = route.firstChild;
     }
-
+    // Após atualizar a rota, pega o data de routes.ts ou QMask, caso não ache nada
     const title = route.snapshot.data['title'] || 'QMask!';
+    // Coloca o título para a página
     this.titleService.setTitle(title);
   }
 
@@ -45,6 +47,10 @@ export class AppComponent implements OnInit{
     ).subscribe(() => {
       this.updateTitle();
     })
+
+    this.totalItems$ = this.cartService.cartItems$.pipe(
+      map(items => items.reduce((total, item) => total + item.quantidade, 0))
+    );
   }
 
   // Captura o valor do campo de texto

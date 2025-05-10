@@ -37,6 +37,7 @@ app.delete('/api/cesto/:id', carrinhoController.removeItem);
 app.delete('/api/cesto', carrinhoController.cleanCesto);
 
 app.get('/api/produtos', produtoController.getProdutos);
+app.get('/api/produtos/buscar', produtoController.getProdutoNome);
 app.get('/api/produtos/:id', produtoController.getProdutoById);
 
 app.get('/api/pedidos', pedidoController.getPedidos);

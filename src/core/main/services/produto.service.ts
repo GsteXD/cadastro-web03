@@ -6,6 +6,11 @@ export class ProdutoService {
     getProdutos() {
         return this.repo.getAll();
     }
+
+    getProdutoNome(nome: string) {
+        return this.repo.getNome(nome);
+    }
+
     getProdutoById(id: number) {
         return this.repo.getById(id);
     }
