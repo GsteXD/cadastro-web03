@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+.pt-5 {
+    margin-top: 60px;
+}
+
+@media (max-width: 768px) {
+    .pt-5{
+        margin-top: 100px;  
+    } 
+}

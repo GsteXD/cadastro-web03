@@ -1,12 +1,8 @@
-.pt-5 {
-    margin-top: 100px;
-}
-
 .small {
     width: 400px;
     height: auto;
     margin: 100px auto;
-    background-color: #d0deeb;
+    background-color: #dddddd;
     border: 1px solid #ddd;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -14,8 +10,18 @@
     text-align: center;
 }   
 
+.box-error {
+    background-color: #ff9999;
+    text-align: center;
+    align-content: center;
+    margin-right: 100px;
+    width: 100%;
+    height: 50px;
+    
+}
+
 .error {
-    color: red;
+    color: rgb(255, 0, 0);
     font-size: 1em;
     margin-top: 5px;
 }

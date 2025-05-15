@@ -74,10 +74,6 @@ body {
     width: 60px;
 }
 
-.pt-5 {
-    margin-top: 60px;
-}
-
 .error {
     color: red;
     font-size: 0.9em;
@@ -94,3 +90,4 @@ body {
   select.ng-valid.ng-touched {
     border-color: green;
   }
+

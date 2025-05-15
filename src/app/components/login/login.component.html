@@ -2,9 +2,9 @@
     <h1 class="text-center">Login</h1>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-        <div *ngIf="loginError" class="error">
-            * Email ou senha incorretos
-          </div>
+        <div *ngIf="loginError" class="box-error">
+            Email ou senha incorretos
+        </div>
 
         <label for="emailLogin" [class.error]="loginError">Email:</label>
         <input
@@ -29,8 +29,8 @@
         >
   
       <button type="submit">Acessar</button> <br>
-      <a class="active" routerLink="/cadastro">Não tem cadastro? Clique aqui</a> <br>
-      <a href="#">Esqueci a senha</a> <!-- TODO: Implementar funcionalidade -->
+      <a routerLink="/cadastro">Não tem cadastro? Clique aqui</a> <br>
+      <a routerLink="/login" (click)="resetSenha()">Esqueci a senha</a> <!-- TODO: Implementar funcionalidade -->
   
     </form>
   </div>
