@@ -46,6 +46,7 @@ app.post('/api/pedidos', pedidoController.criarPedido);
 
 app.post('/api/usuario/login', usuarioController.loginUsuario);
 app.post('/api/usuario/cadastrar', usuarioController.criarUsuario);
+app.post('/api/usuario/new-senha', usuarioController.recuperarSenha);
 
 // Tratamento para arquivos estáticos não encontrados
 app.get(['*.js', '*.css', '*.ico', '*.png', '*.jpg', '*.jpeg', '*.svg'], (req, res) => {

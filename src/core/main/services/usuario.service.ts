@@ -1,5 +1,7 @@
 import { UsuarioRepository } from "../repositories/usuario.repository";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
+import nodemailer from "nodemailer";
 import jwt from "jsonwebtoken";
 
 interface cadastroUsuarioDTO {
@@ -15,6 +17,59 @@ interface cadastroUsuarioDTO {
 export class UsuarioService {
     constructor(private repo = new UsuarioRepository()) {}
 
+    // TODO: Futuramente colocar um email real?
+    private async enviarEmailReset(email: string, link: string) {
+
+        try {
+            const testAccount = await nodemailer.createTestAccount();
+
+            const transporter = nodemailer.createTransport({
+                host: testAccount.smtp.host,
+                port: testAccount.smtp.port,
+                secure: testAccount.smtp.secure,
+                auth: {
+                    user: testAccount.user,
+                    pass: testAccount.pass
+                }
+            });
+
+            //Envia um email(falso)
+            const info = await transporter.sendMail({
+                from: '"QMask!" <no-reply@qmask.com>',
+                to: email,
+                subject: "Redefinição de senha",
+                html: `<p>Para redefinir sua senha, clique no link: <a href="${link}">${link}</a></p>`
+            })
+            //Mostra o link do email
+            console.log('Preview URL:' + nodemailer.getTestMessageUrl(info));
+
+        } catch (err) {
+            throw new Error('Erro no envio do email:');
+        }
+    }
+
+    async resetarSenha(email: string) {
+        const user = await this.repo.getByEmail(email);
+
+        if (!user) {
+            return { sucesso: false, message: 'Usuário não encontrado' }
+        }
+
+        const usuario = user.get({ plain: true });
+        console.log('(resetarSenha)Usuário encontrado:', usuario);
+        // Gera uma sequencia aleatório para um link
+        const token = crypto.randomBytes(32).toString('hex');
+        const expiresAt = new Date(Date.now() + 3600 * 1000); //1h
+
+        await this.repo.setResetToken(usuario.id, token, expiresAt);
+
+        const link = `http://localhost:4200/new-senha?token=${token}`;
+
+        await this.enviarEmailReset(email, link);
+
+        return { sucesso: true, message: 'Email enviado'}
+    }
+
     async autenticarUsuario(email: string, senha: string) {
         const user = await this.repo.getByEmail(email);
 
@@ -23,7 +78,7 @@ export class UsuarioService {
         }
 
         const usuario = user.get({ plain: true });
-        console.log('Usuário encontrado:', usuario);
+        console.log('(autenticarUsuario)Usuário encontrado:', usuario);
 
         const senhaValida = await bcrypt.compare(senha, usuario.senha);
 

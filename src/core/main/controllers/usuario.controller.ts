@@ -3,6 +3,23 @@ import { Request, Response } from "express";
 
 const usuarioService = new UsuarioService();
 
+export const recuperarSenha = async (req: Request, res: Response) => {
+    const { emailRecovery } = req.body;
+
+    try {
+        const resultado = await usuarioService.resetarSenha(emailRecovery);
+
+        if(!resultado.sucesso) {
+            return res.status(401).json({ erro: 'Email não encontrado' });
+        }
+
+        return res.status(200).json({ message: 'Email enviado' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ erro: 'Erro ao enviar o email' });
+    }
+}
+
 export const loginUsuario = async (req: Request, res: Response) => {
     const { emailLogin, senhaLogin } = req.body;
 
