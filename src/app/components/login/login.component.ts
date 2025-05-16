@@ -37,28 +37,37 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       console.log('Logando usuário:', this.loginForm.value);
       this.usuarioService.loginUsuario(this.loginForm.value).subscribe({
-        next: () => {
+        next: () => { // Redirecionamento de rotas caso o usuário queira finalizar o carrinho sem um login
+
+          // Procura por um url de retorno, se não achar, usa o /mainPage
           const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/mainPage';
+          // Procura por um carrinho pendente dentro do local storage
           const pendingCart = localStorage.getItem('pendingCart');
 
+          // Se houver um carrinho pendente e a url de retorno for /checkout for verdadeiro
           if (pendingCart && returnUrl === '/checkout') {
             try {
+              // Formata o conteúdo dentro de pendingCart em um json 
               const items = JSON.parse(pendingCart);
+              // Chama o fetchCart para atualizar os itens do carrinho
               this.cartService.fetchCart().subscribe(() => {
                 // Adiciona itens pendentes ao carrinho existente
                 items.forEach((item: CartItem) => {
                   this.cartService.addItem(item, item.quantidade).subscribe();
                 });
+                // Remove o conteúdo do local storage
                 localStorage.removeItem('pendingCart');
+                // Retorna para a url definida (/checkout)
                 this.router.navigate([returnUrl]);
               });
             } catch (err) {
               console.error('Erro ao restaurar carrinho:', err);
               this.router.navigate([returnUrl]);
             }
-          } else {
-            this.router.navigate([returnUrl]);
           }
+
+          this.router.navigate([returnUrl]);
+          
         },
         error: (err) => {
           console.error('Erro no login:', err);
@@ -74,6 +83,19 @@ export class LoginComponent {
         }
       });
     }
+  }
+
+  resetSenha(): void {
+    
+    if (!this.loginForm.get('emailLogin')?.value) {
+      alert('Insira um email');
+      return;
+    }
+    
+    this.usuarioService.resetarSenha(this.loginForm.get('emailLogin')?.value).subscribe({
+      next: () => alert('Email de verificação enviado.'),
+      error: (err) => alert('Erro ao solicitar a redefinição de senha.')
+    });
   }
 
   resetLoginError(): void {
