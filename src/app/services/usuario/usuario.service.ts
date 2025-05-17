@@ -24,9 +24,14 @@ export class UsuarioService {
     ));
   }
 
-  resetarSenha(email: string): Observable<any> {
+  // Envia um email para resetar a senha
+  resetarSenhaRequest(email: string): Observable<any> {
     // Isso envia um body com a string, e não só a string pura --> retornaria "undefined"
-    return this.http.post(`${this.apiUrl}/new-senha`, {emailRecovery: email});
+    return this.http.post(`${this.apiUrl}/new-senha/token`, {emailRecovery: email});
+  }
+
+  trocarSenha(token: string, newSenha: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/new-senha`, {token, newSenha})
   }
 
   cadastrarUsuario(data: any): Observable<any> {

@@ -88,13 +88,15 @@ export class LoginComponent {
   resetSenha(): void {
     
     if (!this.loginForm.get('emailLogin')?.value) {
-      alert('Insira um email');
-      return;
+      return alert('Insira um email');
     }
     
-    this.usuarioService.resetarSenha(this.loginForm.get('emailLogin')?.value).subscribe({
+    this.usuarioService.resetarSenhaRequest(this.loginForm.get('emailLogin')?.value).subscribe({
       next: () => alert('Email de verificação enviado.'),
-      error: (err) => alert('Erro ao solicitar a redefinição de senha.')
+      error: (err) => {
+        console.error(err),
+        alert('Erro ao solicitar a redefinição de senha.')
+      }
     });
   }
 

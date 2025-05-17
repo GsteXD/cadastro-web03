@@ -48,7 +48,8 @@ export class UsuarioService {
         }
     }
 
-    async resetarSenha(email: string) {
+    // Envia token para resetar a senha do usuário
+    async enviarToken(email: string) {
         const user = await this.repo.getByEmail(email);
 
         if (!user) {
@@ -56,18 +57,49 @@ export class UsuarioService {
         }
 
         const usuario = user.get({ plain: true });
-        console.log('(resetarSenha)Usuário encontrado:', usuario);
+        console.log('(enviarToken)Usuário encontrado:', usuario);
         // Gera uma sequencia aleatório para um link
         const token = crypto.randomBytes(32).toString('hex');
         const expiresAt = new Date(Date.now() + 3600 * 1000); //1h
 
         await this.repo.setResetToken(usuario.id, token, expiresAt);
 
-        const link = `http://localhost:4200/new-senha?token=${token}`;
+        const link = `http://localhost:4200/new-senha/?token=${token}`;
 
         await this.enviarEmailReset(email, link);
 
         return { sucesso: true, message: 'Email enviado'}
+    }
+
+    async resetarSenha(token: string, newSenha: string) {
+        try {
+            let hideSenha;
+            try {
+                hideSenha = await bcrypt.hash(newSenha, 10);
+            } catch (error) {
+                throw new Error("Falha ao criptografar a senha.");
+            }
+
+            const tokenAtual = await this.repo.getToken(token);
+            if(!tokenAtual) { throw new Error('Token inválido'); }
+
+            const tokenFormatado = tokenAtual.get({ plain: true });
+
+            if(new Date(tokenFormatado.expiration) < new Date()) { throw new Error('Token vencido'); }
+
+            console.log('Id do usuário:',tokenFormatado.id_usuario);
+            console.log('Token:', tokenFormatado.token);
+
+            await this.repo.trocarSenha(tokenFormatado.id_usuario, hideSenha);
+
+            await this.repo.removerToken(token);
+
+            return { sucesso: true, message: 'Senha resetada com sucesso!' }
+
+        } catch (err) {
+            console.error('(UsuarioService)Erro ao resetar a senha.')
+            return { sucesso: false, message: 'Erro ao resetar a senha' }
+        }
     }
 
     async autenticarUsuario(email: string, senha: string) {

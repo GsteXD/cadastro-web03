@@ -1,0 +1,30 @@
+<div class="container pt-5 small">
+    <h1 class="text-center">Recupere sua Senha</h1>
+    <form [formGroup]="newSenhaForm" (ngSubmit)="onSubmit()">
+
+        <div *ngIf="senhaError" class="box-error">
+            Senhas não batem
+        </div>
+
+        <label for="newSenha" [class.error]="senhaError"> Nova senha: </label>
+        <input 
+            id="newSenha"
+            type="password"
+            formControlName="newSenha"
+            [class.has-error]="senhaError"
+            required   
+        >
+
+        <label for="senhaConfirm" [class.error]="senhaError"> Confirme a senha: </label>
+        <input 
+            id="senhaConfirm"
+            type="password"
+            formControlName="senhaConfirm"
+            [class.has-error]="senhaError"
+            required
+        >
+
+        <button type="submit">Salvar</button>
+
+    </form>
+</div>

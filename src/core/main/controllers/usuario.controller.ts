@@ -3,17 +3,42 @@ import { Request, Response } from "express";
 
 const usuarioService = new UsuarioService();
 
-export const recuperarSenha = async (req: Request, res: Response) => {
+export const trocarUsuarioSenha = async (req: Request, res: Response) => {
+    const { token, newSenha } = req.body;
+
+    console.log('Senha recebida:',newSenha);
+
+    if (!token || !newSenha) {
+        return res.status(400).json({ erro: 'Token ou nova senha não fornecidos' });
+    }     
+
+    try {
+        const resultado = await usuarioService.resetarSenha(token, newSenha);
+
+        if(!resultado.sucesso) {
+            return res.status(404).json({ erro: 'Token não encontrado' });
+        }
+
+        return res.status(200).json({ message: 'Senha trocada com sucesso' });
+
+    } catch (error) {
+        console.error('Erro ao trocar a senha:', error);
+        return res.status(500).json({ erro: 'Erro ao trocar a senha' });
+    }
+}
+
+export const enviarTokenSenha = async (req: Request, res: Response) => {
     const { emailRecovery } = req.body;
 
     try {
-        const resultado = await usuarioService.resetarSenha(emailRecovery);
+        const resultado = await usuarioService.enviarToken(emailRecovery);
 
         if(!resultado.sucesso) {
-            return res.status(401).json({ erro: 'Email não encontrado' });
+            return res.status(404).json({ erro: 'Email não encontrado' });
         }
 
         return res.status(200).json({ message: 'Email enviado' });
+
     } catch (error) {
         console.error(error);
         return res.status(500).json({ erro: 'Erro ao enviar o email' });
@@ -64,6 +89,7 @@ export const criarUsuario = async (req: Request, res: Response) => {
             documento_id
         });
         return res.status(201).json(novoUsuario);
+
     } catch (error) {
         console.error('Erro ao criar um usuário:', error);
         return res.status(500).json({ erro: 'Erro interno no servidor.' });

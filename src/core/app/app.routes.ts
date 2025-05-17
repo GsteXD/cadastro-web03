@@ -6,6 +6,7 @@ import { DetalhesComponent } from '../../app/components/detalhes/detalhes.compon
 import { BuscaComponent } from '../../app/components/busca/busca.component';
 import { RenderMode } from '@angular/ssr';
 import { CheckoutComponent } from '../../app/components/checkout/checkout.component';
+import { NewSenhaComponent } from '../../app/components/login/new-senha/new-senha.component';
 
 export const routes: Routes = [
   { 
@@ -48,5 +49,11 @@ export const routes: Routes = [
     path: 'checkout',
     component: CheckoutComponent,
     data: { title: 'Checkout - QMask!' }
+  },
+
+  {
+    path: 'new-senha',
+    component: NewSenhaComponent,
+    data: { title: 'Esqueci a senha - QMask!'}
   }
 ];

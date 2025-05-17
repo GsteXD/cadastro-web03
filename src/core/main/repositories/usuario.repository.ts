@@ -14,6 +14,18 @@ export class UsuarioRepository {
         return await Usuario.create(dados);
     }
 
+    async getToken(token: string) {
+        return await Token.findOne({ where: {token} })
+    }
+
+    async removerToken(token: string) {
+        return await Token.destroy({ where: {token} })
+    }
+
+    async trocarSenha(userId: number, newSenha: string) {
+        return await Usuario.update({ senha: newSenha }, { where: {id: userId} })
+    }
+
     async setResetToken(userId: number, token: string, expiresAt: Date) {
         console.log(expiresAt);
 
