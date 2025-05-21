@@ -1,0 +1,47 @@
+<div class="container">
+
+    <div class="d-flex justify-content-between align-items-center">
+        <h2>Novo Endereço</h2>
+         <button class="btn btn-danger" type="button" (click)="cancelar()">X</button>
+    </div>
+
+    <form [formGroup]="enderecoForm" (ngSubmit)="cadastrar()">
+        <div class="form-group">
+            <label>Tipo:</label>
+        </div>
+        <input formControlName="tipo" placeholder="Casa"><br>
+
+        <div class="form-group">
+            <label>CEP:</label>
+        </div>
+        <input formControlName="cep" placeholder="00000-000" (blur)="pesquisacep()" [mask]="mascaraCEP"><br>
+
+        <div class="form-group">
+            <label>Rua:</label>
+        </div>
+        <input formControlName="rua" placeholder="Av. Paulista"><br>
+
+        <div class="form-group">
+            <label>Bairro:</label>
+        </div>
+        <input formControlName="bairro" placeholder="Jardim Paulista"><br>
+
+        <div class="form-group">
+            <label>Número:</label>
+        </div>
+        <input formControlName="numero" placeholder="123"><br>
+
+        <div class="form-group">
+            <label>Cidade:</label>
+        </div>
+        <input formControlName="cidade" placeholder="São Paulo"><br>
+
+        <div class="form-group">
+            <label>Estado:</label>
+        </div>
+        <input formControlName="estado" placeholder="SP"><br>
+
+        <button type="submit">Salvar</button>
+    </form>
+
+</div>
