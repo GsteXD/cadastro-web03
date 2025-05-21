@@ -1,11 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { catchError, filter, of, Subject, switchMap, take, takeUntil } from 'rxjs';
+import { filter, Subject, switchMap, take, takeUntil } from 'rxjs';
 
 import { ProdutoService } from '../../services/produto/produto.service';
 import { CartService } from '../../services/cart/cart.service';
-import { triggerAsyncId } from 'async_hooks';
 
 @Component({
   selector: 'app-detalhes',

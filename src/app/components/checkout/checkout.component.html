@@ -1,3 +1,69 @@
 <div class="container pt-5">
-    <span>Bananei!</span>
+    <h1>Checkout</h1>
+
+    <div class="checkout-content">
+
+        <div class="main-info">
+
+            <section>
+                <h2><i class="fa fa-home"></i> Endereço de Entrega</h2>
+
+                <ng-container *ngIf="(enderecos?.length || 0) > 0; else semEndereco">
+                    <div *ngFor="let endereco of enderecos">
+                        <div [class.selected]="endereco === enderecoSelecionado" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+                            <strong>{{ endereco.tipo }}</strong>
+                            <span *ngIf="endereco.padrao"> (padrão)</span>
+                            <div>{{ endereco.rua }}, {{ endereco.numero }} - {{ endereco.bairro }}, {{ endereco.cep }}</div>
+                            <div>{{ endereco.cidade }} / {{ endereco.estado }}</div>
+                            <button class="btn btn-primary btn-right" (click)="selecionarEndereco(endereco)" [disabled]="endereco === enderecoSelecionado">Selecionar</button>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-template #semEndereco>
+                    <p>Nenhum endereço cadastrado.</p>
+                </ng-template>
+
+                <button class="btn btn-primary" (click)="adicionarEndereco()">CADASTRAR NOVO ENDEREÇO</button>
+            </section>
+            
+            <br>
+
+            <!-- Método de Envio -->
+            <section>
+                <h2><i class="fa fa-truck"></i> Método de Envio</h2>
+                <div *ngFor="let metodo of metodosEnvio">
+                    <input type="radio" [value]="metodo" name="envio" [checked]="(metodoSelecionado$ | async)?.tipo === metodo.tipo" (change)="onMetodoEnvioChange(metodo)">
+                    {{ metodo.tipo }} - {{ metodo.prazo }} dias úteis (R$ {{ metodo.valor | number:'1.2-2' }})
+                </div>
+            </section>
+        </div>
+
+        <!-- Resumo -->
+        <aside class="resumo">
+            <h3>Resumo</h3>
+            <div class="resumo-item">
+                <span class=>Subtotal:</span>
+                <span>R$ {{ subtotal$ | async | number:'1.2-2' }}</span>
+            </div>
+            <div class="resumo-item">
+                <span>{{ (metodoSelecionado$ | async)?.tipo }}:</span>
+                <span>R$ {{ (metodoSelecionado$ | async)?.valor | number:'1.2-2' }}</span>
+            </div>
+            <div class="resumo-item">
+                <strong>Total:</strong>
+                <strong>R$ {{ total$ | async | number:'1.2-2' }}</strong>
+            </div>
+            <div *ngIf="descontoPix > 0" class="text-center">
+                <small>à vista no Pix com {{ descontoPix * 100 }}% de desconto</small>
+                <div>R$ {{ total$ | async | number:'1.2-2' }}</div>
+            </div>
+        </aside>
+    </div>
+    <!-- Ações -->
+    <div class="actions">
+        <button class="btn btn-primary" (click)="voltar()">VOLTAR PARA O CARRINHO</button>
+        <button class="btn btn-primary btn-margin" (click)="irParaPagamento()">CONTINUAR PARA PAGAMENTO</button>
+    </div>
+
 </div>

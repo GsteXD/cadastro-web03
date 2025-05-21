@@ -1,0 +1,54 @@
+.resumo {
+    flex: 1;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    margin-right: 200px;
+    margin-top: 45px;
+}
+
+.actions {
+    display: flex;
+    margin-top: 30px;
+}
+
+.resumo-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+}
+
+.checkout-content {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.main-info {
+    flex: 2;
+}
+
+.btn-right {
+    margin-left: 570px;
+}
+
+.btn-margin {
+    margin-left: 10px;
+}
+
+@media (max-width: 768px) {
+    .resumo {
+        margin-right: 0;
+        margin-top: 65px;
+        width: 100%;
+    }
+
+    .btn-right {
+        margin-left: 0px;
+        width: 100%;
+    }
+
+    .resumo-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

@@ -12,6 +12,8 @@ import * as carrinhoController from './controllers/carrinho.controller';
 import * as produtoController from './controllers/produto.controller';
 import * as pedidoController from './controllers/pedido.controller';
 import * as usuarioController from './controllers/usuario.controller';
+import * as enderecoController from './controllers/endereco.controller';
+import { autenticarToken } from './middleware/token';
 
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
@@ -48,6 +50,8 @@ app.post('/api/usuario/login', usuarioController.loginUsuario);
 app.post('/api/usuario/cadastrar', usuarioController.criarUsuario);
 app.post('/api/usuario/new-senha/token', usuarioController.enviarTokenSenha);
 app.post('/api/usuario/new-senha', usuarioController.trocarUsuarioSenha);
+
+app.post('/api/endereco/cadastrar', autenticarToken, enderecoController.criarEndereco);
 
 // Tratamento para arquivos estáticos não encontrados
 app.get(['*.js', '*.css', '*.ico', '*.png', '*.jpg', '*.jpeg', '*.svg'], (req, res) => {
