@@ -52,6 +52,7 @@ app.post('/api/usuario/new-senha/token', usuarioController.enviarTokenSenha);
 app.post('/api/usuario/new-senha', usuarioController.trocarUsuarioSenha);
 
 app.post('/api/endereco/cadastrar', autenticarToken, enderecoController.criarEndereco);
+app.get('/api/endereco/listar', autenticarToken, enderecoController.listarEnderecos);
 
 // Tratamento para arquivos estáticos não encontrados
 app.get(['*.js', '*.css', '*.ico', '*.png', '*.jpg', '*.jpeg', '*.svg'], (req, res) => {

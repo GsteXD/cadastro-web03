@@ -15,6 +15,6 @@ export class EnderecoRepository {
     }
 
     async getEnderecoById(id_usuario: number) {
-        return await Endereco.findOne({ where: { id_usuario: id_usuario } });
+        return await Endereco.findAll({ where: { id_usuario: id_usuario } });
     }
 }

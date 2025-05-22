@@ -12,7 +12,7 @@ export class EnderecoService {
         return await this.repo.criarEndereco({...dados, id_usuario});
     }
 
-    async getEnderecoById(id_usuario: number) {
+    async listarEnderecos(id_usuario: number) {
 
         if (!id_usuario) {
             throw new Error('Usuário não autenticado');

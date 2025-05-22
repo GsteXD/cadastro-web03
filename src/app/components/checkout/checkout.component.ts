@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 import { EnderecoComponent } from './endereco/endereco.component';
@@ -7,6 +7,8 @@ import { Endereco, MetodoEnvio } from '../../models/entrega.model';
 import { CartService } from '../../services/cart/cart.service';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { Overlay } from '@angular/cdk/overlay';
+import { Router } from '@angular/router';
+import { EnderecoService } from '../../services/endereco/endereco.service';
 
 @Component({
   selector: 'app-checkout',
@@ -15,11 +17,12 @@ import { Overlay } from '@angular/cdk/overlay';
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.css']
 })
-export class CheckoutComponent {
-  enderecos: Endereco[] = [];
+export class CheckoutComponent implements OnInit {
   subtotal$: Observable<number>;
   total$: Observable<number>;
-  // overlay: Overlay; // Removed duplicate declaration
+
+  enderecos: Endereco[] = [];
+  enderecoSelecionado?: Endereco | null = null;
 
   exibirCadastroEndereco = false;
 
@@ -30,12 +33,13 @@ export class CheckoutComponent {
 
   metodoSelecionado$ = new BehaviorSubject<MetodoEnvio>(this.metodosEnvio[0]);
   descontoPix = 0.1; // 10%
-  enderecoSelecionado: Endereco | null = null;
 
   constructor(
     private cartService: CartService,
     private modal: MatDialog,
-    private overlay: Overlay
+    private overlay: Overlay,
+    private router: Router,
+    private enderecoService: EnderecoService
   ) {
     this.subtotal$ = this.cartService.total$;
     this.total$ = combineLatest([
@@ -44,6 +48,25 @@ export class CheckoutComponent {
     ]).pipe(
       map(([subtotal, metodo]) => subtotal + (metodo?.valor || 0))
     );
+  }
+
+  carregarEnderecos() {
+    this.enderecoService.getEnderecos().subscribe({
+      next: (enderecos) => {
+        console.log('Endereços recebidos:', Array.isArray(enderecos), enderecos);
+        this.enderecos = enderecos;
+        if (this.enderecos.length > 0) {
+          this.enderecoSelecionado = this.enderecos[0];
+        }
+      },
+      error: (err) => {
+        console.error('Erro ao carregar os endereços:', err);
+      }
+    })
+  }
+
+  ngOnInit(): void {
+    this.carregarEnderecos();
   }
 
   onMetodoEnvioChange(metodo: MetodoEnvio) {
@@ -61,14 +84,13 @@ export class CheckoutComponent {
 
     modalRef.afterClosed().subscribe(resultado => {
       if (resultado) {
-        this.enderecos.push(resultado);
-        this.enderecoSelecionado = resultado;
+        this.carregarEnderecos();
       }
     })
   }
 
   voltar() {
-    alert('Voltando...');
+    this.router.navigate(['/mainPage']);
   }
 
   irParaPagamento() {
