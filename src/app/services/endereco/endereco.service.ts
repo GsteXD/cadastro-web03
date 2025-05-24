@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { map, Observable, of, throwError } from "rxjs";
+import { catchError, map, Observable, of, throwError } from "rxjs";
 import { Endereco } from "../../models/entrega.model";
 
 @Injectable({ providedIn: "root" }) 
@@ -40,7 +40,14 @@ export class EnderecoService {
         })
 
         return this.http.get<Endereco[]>(`${this.apiurl}/listar`, {headers}).pipe(
-            map(endereco => Array.isArray(endereco) ? endereco : [endereco])
+            map(endereco => Array.isArray(endereco) ? endereco : [endereco]),
+            catchError((error) => {
+                console.error('Erro ao carregar os endereços:', error);
+                if (error.status === 403) {
+                    this.router.navigate(['/login']);
+                }
+                return throwError(() => new Error('(EnderecoService)Falha na autenticação'));
+            })
         );
     }
 }

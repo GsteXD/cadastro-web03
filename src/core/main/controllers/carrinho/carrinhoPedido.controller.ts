@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { PedidoService } from '../services/pedido.service';
+import { PedidoService } from '../../services/carrinho/carrinhoPedido.service';
 
 const pedidoService = new PedidoService();
 
