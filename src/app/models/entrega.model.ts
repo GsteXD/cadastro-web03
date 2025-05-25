@@ -14,3 +14,9 @@ export interface MetodoEnvio {
     prazo: number;
     valor: number;
 }
+
+export interface MetodoPagamento {
+    tipo: string;
+    bandeira?: string;
+    parcelas?: number;
+}

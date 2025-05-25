@@ -1,9 +1,9 @@
 .resumo {
-    flex: 1;
+    flex: 0 400px;
     border: 1px solid #ccc;
     padding: 1rem;
     margin-right: 200px;
-    margin-top: 45px;
+    margin-top: 102px;
 }
 
 .actions {
@@ -24,7 +24,7 @@
 }
 
 .main-info {
-    flex: 2;
+    flex: 1;
 }
 
 .btn-right {
@@ -37,8 +37,8 @@
 
 @media (max-width: 768px) {
     .resumo {
-        margin-right: 0;
-        margin-top: 65px;
+        margin-right: 0px;
+        margin-top: 78px;
         width: 100%;
     }
 

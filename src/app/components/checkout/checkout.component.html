@@ -1,69 +1,101 @@
-<div class="container pt-5">
-    <h1>Checkout</h1>
+<!-- Uso de switch para mudar os elementos exibidos na página-->
+<ng-container [ngSwitch]="etapaAtual">
+    <div class="container pt-5">
+        <div class="checkout-content d-flex gap-1">
+            <div class="main-info flex-grow-1">
+                <h1>Checkout</h1>
+                <!-- Endereço -->
+                <div *ngSwitchCase="'endereco'" class="main-info">
+                    <section>
+                        <h2>Endereço de Entrega</h2>
 
-    <div class="checkout-content">
+                        <!-- Pega a lista de endereços-->
+                        <ng-container *ngIf="(enderecos?.length || 0) > 0; else semEndereco">
+                            <div *ngFor="let endereco of enderecos">
+                                <div [class.selected]="endereco === enderecoSelecionado" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+                                    <strong>{{ endereco.tipo }}</strong>
+                                    <span *ngIf="endereco.padrao"> (padrão)</span>
+                                    <div>{{ endereco.rua }}, {{ endereco.numero }} - {{ endereco.bairro }}, {{ endereco.cep }}</div>
+                                    <div>{{ endereco.cidade }} / {{ endereco.estado }}</div>
+                                    <button class="btn btn-primary btn-right" (click)="selecionarEndereco(endereco)" [disabled]="endereco === enderecoSelecionado">Selecionar</button>
+                                </div>
+                            </div>
+                        </ng-container>
 
-        <div class="main-info">
+                        <!-- Caso o usuário não tenha nenhum endereço cadastrado -->
+                        <ng-template #semEndereco>
+                            <p>Nenhum endereço cadastrado.</p>
+                        </ng-template>
 
-            <section>
-                <h2><i class="fa fa-home"></i> Endereço de Entrega</h2>
+                        <button class="btn btn-primary" (click)="adicionarEndereco()">CADASTRAR NOVO ENDEREÇO</button>
 
-                <ng-container *ngIf="(enderecos?.length || 0) > 0; else semEndereco">
-                    <div *ngFor="let endereco of enderecos">
-                        <div [class.selected]="endereco === enderecoSelecionado" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-                            <strong>{{ endereco.tipo }}</strong>
-                            <span *ngIf="endereco.padrao"> (padrão)</span>
-                            <div>{{ endereco.rua }}, {{ endereco.numero }} - {{ endereco.bairro }}, {{ endereco.cep }}</div>
-                            <div>{{ endereco.cidade }} / {{ endereco.estado }}</div>
-                            <button class="btn btn-primary btn-right" (click)="selecionarEndereco(endereco)" [disabled]="endereco === enderecoSelecionado">Selecionar</button>
+                        <br><br>
+
+                        <!-- Método de Envio -->
+                        <h2>Método de Envio</h2>
+                        <div *ngFor="let metodo of metodosEnvio">
+                            <input type="radio" [value]="metodo" name="envio" [checked]="(metodoEnvioSelecionado$ | async)?.tipo === metodo.tipo" (change)="onMetodoEnvioChange(metodo)">
+                            {{ metodo.tipo }} - {{ metodo.prazo }} dias úteis (R$ {{ metodo.valor | number:'1.2-2' }})
                         </div>
-                    </div>
-                </ng-container>
 
-                <ng-template #semEndereco>
-                    <p>Nenhum endereço cadastrado.</p>
-                </ng-template>
+                        <!-- Ações -->
+                        <div class="actions">
+                            <button class="btn btn-primary" [routerLink]="['/mainPage']">VOLTAR PARA O CARRINHO</button>
+                            <button class="btn btn-primary btn-margin" (click)="irParaPagamento()">CONTINUAR PARA PAGAMENTO</button>
+                        </div>
 
-                <button class="btn btn-primary" (click)="adicionarEndereco()">CADASTRAR NOVO ENDEREÇO</button>
-            </section>
-            
-            <br>
-
-            <!-- Método de Envio -->
-            <section>
-                <h2><i class="fa fa-truck"></i> Método de Envio</h2>
-                <div *ngFor="let metodo of metodosEnvio">
-                    <input type="radio" [value]="metodo" name="envio" [checked]="(metodoSelecionado$ | async)?.tipo === metodo.tipo" (change)="onMetodoEnvioChange(metodo)">
-                    {{ metodo.tipo }} - {{ metodo.prazo }} dias úteis (R$ {{ metodo.valor | number:'1.2-2' }})
+                    </section>
                 </div>
-            </section>
+
+                <!-- Pagamento -->
+                <div *ngSwitchCase="'pagamento'" class="main-info">
+                    <section>
+                        <h2>Pagamento</h2>
+
+                        <div *ngFor="let metodo of metodoPagamento">
+                            <input type="radio" [value]="metodo" name="pagamento" [checked]="(metodoPagamentoSelecionado$ | async)?.tipo === metodo.tipo" (change)="onMetodoPagamentoChange(metodo)">
+                            {{ metodo.tipo }}
+                            <span *ngIf="metodo.tipo === 'Cartão de Crédito'"> - {{ metodo.parcelas }}x Sem Juros</span>
+
+                        </div>
+
+                        <div class="actions">
+                            <button class="btn btn-primary" (click)="irParaEndereco()">VOLTAR PARA ENDEREÇO</button>
+                            <button class="btn btn-primary btn-margin" (click)="finalizarCompra()">FINALIZAR COMPRA</button>
+                        </div>
+
+                    </section>
+
+                </div>
+            </div>
+
+            <!-- Resumo -->
+            <aside class="resumo">
+                <h3>Resumo</h3>
+                <div class="resumo-item">
+                    <span class=>Subtotal:</span>
+                    <span>R$ {{ subtotal$ | async | number:'1.2-2' }}</span>
+                </div>
+                <div class="resumo-item">
+                    <span>{{ (metodoEnvioSelecionado$ | async)?.tipo }}:</span>
+                    <span>R$ {{ (metodoEnvioSelecionado$ | async)?.valor | number:'1.2-2' }}</span>
+                </div>
+                <div class="resumo-item">
+                    <strong>Total:</strong>
+                    <strong>R$ {{ totalFinal$ | async | number:'1.2-2' }}</strong>
+                </div>
+                <div *ngIf="descontoPix > 0" class="text-center">
+                    <div *ngIf="( currTipoPagamento | async ) === 'Pix' || ( currTipoPagamento | async) === 'Boleto'">
+                        <small>à vista no Pix com {{ descontoPix * 100 }}% de desconto</small>
+                        <div>R$ {{ totalDesconto$ | async | number:'1.2-2' }}</div>
+                    </div>
+                    <small *ngIf="( currTipoPagamento | async ) === 'Cartão de Crédito'">Em até {{ (metodoPagamentoSelecionado$ | async)?.parcelas }}x de R$ {{ totalParcelado$ | async | number:'1.2-2' }} sem juros</small>
+                </div>
+            </aside>
+
         </div>
-
-        <!-- Resumo -->
-        <aside class="resumo">
-            <h3>Resumo</h3>
-            <div class="resumo-item">
-                <span class=>Subtotal:</span>
-                <span>R$ {{ subtotal$ | async | number:'1.2-2' }}</span>
-            </div>
-            <div class="resumo-item">
-                <span>{{ (metodoSelecionado$ | async)?.tipo }}:</span>
-                <span>R$ {{ (metodoSelecionado$ | async)?.valor | number:'1.2-2' }}</span>
-            </div>
-            <div class="resumo-item">
-                <strong>Total:</strong>
-                <strong>R$ {{ total$ | async | number:'1.2-2' }}</strong>
-            </div>
-            <div *ngIf="descontoPix > 0" class="text-center">
-                <small>à vista no Pix com {{ descontoPix * 100 }}% de desconto</small>
-                <div>R$ {{ total$ | async | number:'1.2-2' }}</div>
-            </div>
-        </aside>
-    </div>
-    <!-- Ações -->
-    <div class="actions">
-        <button class="btn btn-primary" (click)="voltar()">VOLTAR PARA O CARRINHO</button>
-        <button class="btn btn-primary btn-margin" (click)="irParaPagamento()">CONTINUAR PARA PAGAMENTO</button>
     </div>
 
-</div>
+</ng-container>
+
+
