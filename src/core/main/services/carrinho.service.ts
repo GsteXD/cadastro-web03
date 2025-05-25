@@ -1,4 +1,4 @@
-import { CarrinhoRepository } from '../../repositories/carrinho.repository'
+import { CarrinhoRepository } from '../repositories/carrinho.repository'
 
 export class CarrinhoService {
     constructor(private repo = new CarrinhoRepository()) {}

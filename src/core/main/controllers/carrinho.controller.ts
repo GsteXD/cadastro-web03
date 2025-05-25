@@ -1,5 +1,5 @@
-import { CarrinhoService } from '../../services/carrinho/carrinho.service';
-import { ProdutoService } from '../../services/produto.service';
+import { CarrinhoService } from '../services/carrinho.service';
+import { ProdutoService } from '../services/produto.service';
 import { Request, Response } from 'express';
 
 const carrinhoService = new CarrinhoService();
