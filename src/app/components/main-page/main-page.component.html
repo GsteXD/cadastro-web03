@@ -1,15 +1,14 @@
 <div class="container-fluid pt-5">
     <h1 class="mb-4 text-center">Em Destaque</h1>
-    <!-- Passa o array bidimensional para o Carousel -->
+    <!-- Pega o html do app carousel -->
     <app-carousel></app-carousel>
 </div>
 <br> <br>
 <div class="container">
     <h1 class="mb-4 text-center">Mais Produtos</h1>
-    <!-- Itera sobre o array bidimensional -->
+    <!-- Lista dos produtos -->
     <div class="row">
         <div class="col-md-3" *ngFor="let produto of produtos">
-            <!-- Exibe os produtos em cards -->
             <div class="card produto">
                 <img [src]="produto.imagem" class="card-img-top" [alt]="produto.nome">
                 <div class="card-body text-center">

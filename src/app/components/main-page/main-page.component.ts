@@ -15,7 +15,7 @@ import { Produto } from '../../models/produto.model';
 
 //Página principal do site, onde são exibidos os produtos
 export class MainPageComponent implements OnInit{
-  produtos: Produto[] = []; // Array unidimensional
+  produtos: Produto[] = []; // Lista dos produtos
 
   constructor(private produtoService: ProdutoService) { }
   
@@ -23,7 +23,7 @@ export class MainPageComponent implements OnInit{
     this.produtoService.getProdutos().subscribe({
       next: (produtos) => {
         console.log('Resposta da API:', produtos);
-        this.produtos = produtos; // Atualiza o array bidimensional com os dados da API
+        this.produtos = produtos; // Atualiza a lista a partir da resposta da API
       },
       error: (err) => {
         console.error('Erro ao carregar os produtos:', err);
