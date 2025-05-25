@@ -21,8 +21,7 @@ export class CartService {
   );
 
   private readonly API_URLS = {
-    CART: '/api/cesto',
-    ORDERS: '/api/pedidos'
+    CART: '/api/cesto'
   };
 
   constructor(
@@ -106,34 +105,31 @@ export class CartService {
     );
   }
 
+  get totalValue(): number {
+    return this.cartItemsSubject.value.reduce(
+      (total, item) => total + (Number(item.precoNumerico) * Number(item.quantidade)), 0
+    )
+  }
+
   finalizeOrder(): Observable<void> {
     //Verifica se o carrinho está vazio
     if (this.cartItemsSubject.value.length === 0) {
       return throwError(() => new Error('Carrinho Vazio!'));
     }
 
-    //Verifica se o usuário está logado
-    if(!this.usuarioService.isLoggedIn()) {
-      this.router.navigate(['/login'], {
-        queryParams: { returnUrl: '/checkout' }
-      });
-      return of();
-    }
-
-    this.loadingSubject.next(true);
-    return this.http.post(`${this.API_URLS.ORDERS}`, { 
-      items: this.cartItemsSubject.value, 
-      token: this.usuarioService.getToken() 
-    }).pipe(
-      switchMap(() => this.fetchCart()),
-      tap(() => {
-        this.router.navigate(['/checkout']); //redireciona para o checkout
-      }),
+    return this.usuarioService.autenticarToken().pipe(
       catchError(error => {
-        console.error('Erro ao finalizar o pedido:', error);
-        return throwError(() => error);
+        console.error('Erro ao autenticação do usuário:', error);
+        return throwError(() => new Error('Falha na autenticação do usuário'));
       }),
-      finalize(() => this.loadingSubject.next(false))
+      tap(() => {
+        localStorage.setItem('checkout_preview', JSON.stringify({
+          items: this.cartItemsSubject.value,
+          total: this.totalValue // Usando um getter para conseguir extrair o valor total
+        }));
+        this.cartItemsSubject.next([]);
+        this.router.navigate(['/checkout']);
+      })
     );
   }
 

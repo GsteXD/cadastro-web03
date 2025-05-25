@@ -10,9 +10,9 @@ import { fileURLToPath } from 'node:url';
 
 import * as carrinhoController from './controllers/carrinho.controller';
 import * as produtoController from './controllers/produto.controller';
-import * as pedidoController from './controllers/pedido.controller';
 import * as usuarioController from './controllers/usuario.controller';
 import * as enderecoController from './controllers/endereco.controller';
+import * as pedidoController from './controllers/pedido.controller';
 import { autenticarToken } from './middleware/token';
 
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
@@ -42,10 +42,9 @@ app.get('/api/produtos', produtoController.getProdutos);
 app.get('/api/produtos/buscar', produtoController.getProdutoNome);
 app.get('/api/produtos/:id', produtoController.getProdutoById);
 
-app.get('/api/pedidos', pedidoController.getPedidos);
-app.get('/api/pedidos/:id', pedidoController.getPedidoById);
-app.post('/api/pedidos', pedidoController.criarPedido);
+app.post('/api/pedido/cadastrar', autenticarToken, pedidoController.criarPedido);
 
+app.post('/api/usuario/autenticar', autenticarToken, usuarioController.autenticarUsuario);
 app.post('/api/usuario/login', usuarioController.loginUsuario);
 app.post('/api/usuario/cadastrar', usuarioController.criarUsuario);
 app.post('/api/usuario/new-senha/token', usuarioController.enviarTokenSenha);

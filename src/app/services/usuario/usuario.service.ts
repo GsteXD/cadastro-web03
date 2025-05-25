@@ -24,6 +24,26 @@ export class UsuarioService {
     ));
   }
 
+  autenticarToken(): Observable<any> {
+    const token = localStorage.getItem(this.TOKEN_KEY);
+    if (!token) {
+      this.router.navigate(['/login']);
+      return throwError(() => new Error('Usuário não autenticado'));
+    }
+
+    return this.http.post(`${this.apiUrl}/autenticar`, {}, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).pipe(
+      catchError(error => {
+        console.error('Falha na autenticação do token:', error);
+        if (error.status === 403) {
+          this.router.navigate(['/login']);
+        }
+        return throwError(() => error);
+      })
+    );
+  }
+
   // Envia um email para resetar a senha
   resetarSenhaRequest(email: string): Observable<any> {
     // Isso envia um body com a string, e não só a string pura --> retornaria "undefined"
@@ -38,16 +58,4 @@ export class UsuarioService {
     return this.http.post(`${this.apiUrl}/cadastrar`, data);
   }
   
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem(this.TOKEN_KEY);
-  }
-
-  logout(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
-    this.router.navigate(['/login']);
-  }
-
-  getToken(): string | null{
-    return localStorage.getItem(this.TOKEN_KEY);
-  }
 }

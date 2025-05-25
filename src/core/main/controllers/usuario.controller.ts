@@ -29,7 +29,7 @@ export const trocarUsuarioSenha = async (req: Request, res: Response) => {
 
 export const enviarTokenSenha = async (req: Request, res: Response) => {
     const { emailRecovery } = req.body;
-
+    
     try {
         const resultado = await usuarioService.enviarToken(emailRecovery);
 
@@ -62,6 +62,10 @@ export const loginUsuario = async (req: Request, res: Response) => {
         return res.status(500).json({ erro: 'Erro ao realizar o login:' });
     }
 };
+
+export const autenticarUsuario = async (req: Request, res: Response) => {
+    return res.status(200).json({ usuario: req.user?.id });
+}
 
 export const criarUsuario = async (req: Request, res: Response) => {
     try {
