@@ -1,13 +1,7 @@
 import { Pedido } from "../models/pedido.model";
 
 export class PedidoRepository {
-    async criarPedido(dados: {
-        id_usuario: number;
-        total: number;
-        forma_pagamento: string;
-        metodo_envio: string;
-        data: Date;
-    }) {
+    async criarPedido(dados: any) {
         return await Pedido.create(dados);
     }
 

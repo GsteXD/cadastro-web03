@@ -5,7 +5,7 @@ const pedidoService = new PedidoService();
 
 export const criarPedido = async (req: Request, res: Response) => {
     try {
-        const{ total, formaPgto, data, metodoEnvio } = req.body;
+        const{ itens, endereco, metodoPagamento, metodoEnvio, total, data } = req.body;
         const { id: id_usuario } = req.user || {};
 
         if (!req.user || !req.user.id) {

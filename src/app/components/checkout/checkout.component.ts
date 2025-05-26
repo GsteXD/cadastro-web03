@@ -4,9 +4,10 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 import { EnderecoComponent } from './endereco/endereco.component';
 import { Endereco, MetodoEnvio, MetodoPagamento } from '../../models/entrega.model';
-import { BehaviorSubject, combineLatest, map, Observable, of } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, of, take } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
 import { EnderecoService } from '../../services/endereco/endereco.service';
+import { PedidoService } from '../../services/pedido/pedido.service';
 
 @Component({
   selector: 'app-checkout',
@@ -49,7 +50,12 @@ export class CheckoutComponent implements OnInit {
     map(metodo => metodo?.tipo)
   );
 
-  constructor(private modal: MatDialog, private enderecoService: EnderecoService) {}
+  constructor(
+    private modal: MatDialog, 
+    private enderecoService: EnderecoService, 
+    private pedidoService: PedidoService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.carregarDados();
@@ -74,7 +80,6 @@ export class CheckoutComponent implements OnInit {
       const preview = localStorage.getItem('checkout_preview');
       const data = JSON.parse(preview!);
       const total = data.total || 0;
-      this.items = data.items || [];
 
       this.subtotal$ = of(total);
       this.total$ = combineLatest([this.subtotal$, this.metodoEnvioSelecionado$])
@@ -143,11 +148,42 @@ export class CheckoutComponent implements OnInit {
   }
 
   finalizarCompra() {
-    if (!this.metodoPagamentoSelecionado$.value) {
-      alert('Informe um método de pagamento.');
-      return;
-    }
-    alert('Compra finalizada com sucesso!');
+    combineLatest([
+      this.metodoPagamentoSelecionado$,
+      this.metodoEnvioSelecionado$,
+      this.totalFinal$
+    ]).pipe(take(1)).subscribe(([metodoPgto, metodoEnvio, total]) => {
+      if (!metodoPgto) {
+        alert('Informe um método de pagamento.');
+        return;
+      }
+
+      const preview = localStorage.getItem('checkout_preview');
+      const data = preview ? JSON.parse(preview) : null;
+      if (!data || !data.items) {
+        alert('Não foi possível recuperar os itens do pedido.')
+        return;
+      }
+
+      const pedido = {
+        itens: data.items.map((item: any) => item.id),
+        id_endereco: this.enderecoSelecionado?.id || null,
+        formaPgto: metodoPgto.tipo,
+        metodoEnvio: metodoEnvio?.tipo || null,
+        total: total,
+        data: new Date().toISOString()
+      };
+
+      console.log(pedido);
+
+      this.pedidoService.criarPedido(pedido).subscribe({
+        next:() => {
+          alert('Compra finalizada com sucesso!'),
+          this.router.navigate(['/mainPage'])
+        },
+        error:() => alert('Erro ao finalizar a compra')
+      });
+    });
   }
 
   irParaPagamento() {
